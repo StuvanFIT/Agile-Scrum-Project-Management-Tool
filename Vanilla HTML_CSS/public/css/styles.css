@@ -1,0 +1,1072 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #2c2c54;
+    height: 100%;
+}
+
+.tunnel-vision-container {
+    background-color: #2c2c54;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 129px;
+    overflow: hidden;
+    width: 100%;
+}
+  
+.header-container {
+    background-color: #2c2c54;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+  
+.menu {
+    position: absolute;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 23px;
+}
+  
+  .menu-button-line {
+    border-radius: 46px;
+    background-color: #2c2c54;
+    width: 98px;
+    height: 14px;
+    border: 2px solid #f5e6e8;
+    cursor: pointer;
+}
+  
+  .tunnel-vision-title {
+    color: #f5e6e8;
+    font: 600 64px Inter, sans-serif;
+    text-align: center;
+}
+  
+  .page-title {
+    color: #f5e6e8;
+    text-align: center;
+    margin-top: 46px;
+    font: 800 48px Inter, sans-serif;
+}
+  
+.kanban-container {
+    display: flex;
+    gap: 20px;
+}
+  
+.task-list {
+    border-radius: 10px;
+    background-color: #f5e6e8;
+    display: flex;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+    font-weight: 700;
+    padding: 1%;
+    align-items: center;
+    color: #fff
+}
+  
+.task-ns-status {
+    border-radius: 10px;
+    background-color: #5a0001;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    padding: 1%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.task-ip-status {
+    border-radius: 10px;
+    background-color: #9E4801;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    padding: 1%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.task-c-status {
+    border-radius: 10px;
+    background-color: #386150;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    padding: 1%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.task-item-index {
+    border-radius: 10px;
+    background-color: #333;
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+    align-items: start;
+    padding: 1%;
+}
+  
+  .task-title {
+    font-size: 16px;
+  }
+  
+  .task-line-thing {
+    margin-top: -5px;
+    width: 450px;
+    max-width: 100%;
+    height: -2px;
+    border: 2px solid #fff;
+  }
+  
+.task-tag {
+    margin-top: 12px;
+}
+  
+.task-description {
+    align-self: stretch;
+    margin-top: 8px;
+}
+  
+.expand-button {
+    object-fit: contain;
+    object-position: center;
+    width: 22px;
+    align-self: end;
+    margin-top: 8px;
+    cursor: pointer;
+}
+  
+@media (max-width: 991px) {
+    .tunnel-vision-container {
+        padding-bottom: 100px;
+    }
+
+    .header-container {
+        padding: 0 20px;
+    }
+
+    .tunnel-vision-title {
+        font-size: 40px;
+    }
+
+    .page-title {
+        margin-top: 40px;
+        font-size: 40px;
+        align-items: center;
+    }
+
+    .task-list {
+        padding-bottom: 100px;
+    }
+
+    .task-status {
+        padding: 0 20px;
+    }
+
+    .task-description {
+        margin-right: 10px;
+    }
+}
+  
+.logo-image {
+    width: 7%;
+    height: auto;
+}
+
+#edit-tag {
+    width: 100%;
+    margin: 0; /* Reset margin if needed */
+    padding: 0; /* Reset padding if needed */
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-selection {
+    height: auto; 
+
+}
+
+
+.select2-results {
+    max-height: 200px; 
+    overflow-y: auto; 
+}
+
+
+
+body {
+    font-family: "Lato", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    padding: 0 16px;
+    height: 50px;
+}
+
+.topnav .title {
+    font-size: 20px;
+    color: #f2f2f2;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.main-content {
+    margin-top: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+
+
+/* Individual button styling */
+
+#addTaskBtn, #filterBtn, #resetBtn {
+    width: 75px;
+    height: 75px;
+    cursor: pointer;
+}
+
+
+#addTaskPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+
+.tables-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+table {
+    border-collapse: separate;
+    width: 100%;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+  
+th {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid black;
+    background-color: #8D99AE;
+    color: black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid black;
+    border: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    width: 14%;
+    text-align: center;
+    background-color: white;
+}
+
+#applyBtn {
+    width: 100%;
+    background-color: #2C2C54;
+    color: white;
+}
+
+#filter-function {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 12%; 
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border: 1px solid black; 
+    border-radius: 5px; 
+    background-color:white;
+    box-sizing: border-box; 
+}
+
+
+#filterPopup {
+    display: none;
+    z-index: 1;
+}
+
+/*-------------------------------------------------------------------------------------------------------*/
+/* This part of the css is styling the table rows to make it look more visually appealing*/
+/*Note that table-left is the class name of our product backlog table*/
+/*NOte that the first row are the headers so we need to not apply the effects only to the tbody tr*/
+.table-left tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for effects */
+}
+
+
+/* Hover effect for rows */
+/*-------------------------------------------------------------------------------------------------------*/
+/* Form Container */
+#add-product-requirement-backlog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 25%; 
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid black; 
+    border-radius: 5px; 
+    background-color: white;
+    box-sizing: border-box; 
+}
+
+/* Input Fields */
+#add-product-requirement-backlog input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Button */
+#submit-new-task, #submit-sprint-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#add-product-requirement-backlog button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+/* Styles for the popup */
+.popup {
+    display: none; 
+    position: fixed; 
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); 
+    width: 300px; 
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 3; 
+}
+
+
+/* Close button style */
+.close-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+/* Styles for filter options */
+.filter-option {
+    margin: 10px 10;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+}
+
+button {
+    padding: 5px 5px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #386150;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    transition: background-color 0.3s;
+    width: 30%;
+}
+
+button:hover {
+    background-color: #d5c7c9;
+}
+
+
+
+.sort-controls {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+.sort-controls-box {
+    display: inline-block; 
+    align-items: center; 
+    justify-content: flex-end;
+  }
+
+.addTask-filter-reset-buttons {
+    display: inline-block; 
+    align-items: center; 
+    justify-content: flex-end;
+  }
+
+.filter-and-sort-container {
+    display: inline-block; 
+    align-items: center; 
+    justify-content: flex-end;
+}
+
+/* Label Styling */
+.sort-controls label {
+  font-weight: bold; /* Make the label text bold */
+  margin-right: 10px; 
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #2C2C54;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #49498b;
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card-view {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px; 
+    width: 1200px;
+}
+
+.hide {
+    display: none;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Centering the form in the viewport */
+#edit-task-form {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fix the position relative to the viewport */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by 50% of width and height */
+    width: 100%; /* Responsive width */
+    max-width: 500px; /* Max width for larger screens */
+    max-height: 60vh; /* Max height of 80% viewport height */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    padding: 20px;
+    border-radius: 10px; 
+    width: 400px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+    z-index: 1000;
+}
+
+/* Styling the form headings */
+#edit-task-form h3 {
+    margin-top: 0; /* Remove default margin */
+    margin-bottom: 15px; /* Reduce space below heading */
+    font-size: 1.3em; /* Slightly smaller font size */
+    text-align: center; /* Center the heading */
+}
+
+/* Label styling */
+#edit-task-form label {
+    display: block; /* Block layout for spacing */
+    margin-bottom: 4px; /* Space below label */
+    font-weight: bold; /* Bold labels */
+}
+
+/* Input, textarea, and select styling 
+#edit-task-form [type="text"],
+#edit-task-form textarea {
+    width: 100%; 
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid black; 
+    border-radius: 5px; 
+    background-color:white;
+    box-sizing: border-box; 
+} */
+
+
+
+/* Save and Cancel button styles */
+#save-edit-btn, #delete-edit-btn, #close-edit-btn {
+    width: 48%; /* Width of each button */
+    padding: 8px 12px; /* Smaller padding to save space */
+    margin: 10px 1%; /* Space around buttons */
+    font-size: 0.95em; /* Slightly smaller font size */
+    font-weight: bold; /* Bold text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth background change */
+}
+
+/* Save button specific styles */
+#save-edit-btn {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+}
+
+/* Save button hover effect */
+#save-edit-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Cancel button specific styles */
+#close-edit-btn {
+    background-color: #dc3545; /* Red background */
+    color: white; /* White text */
+}
+
+/* Cancel button hover effect */
+#close-edit-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+
+
+#delete-edit-btn {
+    background-color: #dc35b8; /* Red background */
+    color: white; /* White text */
+}
+/* Delete button hover effect */
+#delete-edit-btn:hover {
+    background-color: #dc35b8; /* Darker red on hover */
+}
+
+
+
+
+/* Form button container for alignment */
+#edit-task-form .button-container {
+    text-align: center; /* Center buttons */
+    margin-top: 10px; /* Space above buttons */
+}
+
+/* Make sure select fields align with other inputs */
+#edit-task-form select {
+    appearance: none; /* Remove default select styles */
+}
+
+/* Form styling for smaller screens. This fulfils the client need to visually observe on 
+multiple devices here*/
+@media (max-width: 600px) {
+    #edit-task-form {
+        padding: 15px;
+    }
+
+    #edit-task-form h3 {
+        font-size: 1.2em; /* Smaller font size for heading */
+    }
+
+    #save-edit-btn, #close-edit-btn {
+        width: 100%; /* Full width buttons for mobile */
+        margin: 5px 0; 
+    }
+}
+
+
+/* Modal Styles */
+.modal {
+    display: none ; 
+    position: fixed; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    z-index: 1; /* Sit on top */
+    overflow: auto; 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centered ???????????????*/
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px; /* Could be more or less, WHICH depends  on  the users screen size */
+    text-align: center;
+    border-radius: 8px;
+}
+
+.modal button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+
+
+/* Modal container styling */
+.view-more-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    align-content: left;
+}
+
+/* Modal content */
+.view-more-modal-content {
+    background-color: white;
+    margin: 15% auto; /* Centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less depending on screen size */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Optional rounded corners */
+    color: black
+}
+
+.view-more-modal-content h2 {
+    text-align: left;
+    color: black;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer; /* Pointer cursor */
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+:root {
+  --bar-width: 60px;
+  --bar-height: 8px;
+  --hamburger-gap: 6px;
+  --foreground: #f5e6e8;
+  --background: #2c2c54;
+  --hamburger-margin: 8px;
+  --animation-timing: 200ms ease-in-out;
+  --hamburger-height: calc(var(--bar-height) * 3 + var(--hamburger-gap) * 2);
+}
+
+.hamburger-menu {
+  --x-width: calc(var(--hamburger-height) * 1.41421356237);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--hamburger-gap);
+  width: max-content;
+  position: absolute;
+  top: var(--hamburger-margin);
+  left: var(--hamburger-margin);
+  z-index: 3;
+  cursor: pointer;
+}
+
+.hamburger-menu:has(input:checked) {
+  --foreground: #2c2c54;
+  --background: #f5e6e8;
+}
+
+.hamburger-menu:has(input:focus-visible)::before,
+.hamburger-menu:has(input:focus-visible)::after,
+.hamburger-menu input:focus-visible {
+  border: 1px solid var(--background);
+  box-shadow: 0 0 0 1px var(--foreground);
+}
+
+.hamburger-menu::before,
+.hamburger-menu::after,
+.hamburger-menu input {
+  content: "";
+  width: var(--bar-width);
+  height: var(--bar-height);
+  background-color: var(--foreground);
+  border-radius: 9999px;
+  transform-origin: left center;
+  transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--animation-timing), translate var(--animation-timing), background-color var(--animation-timing);
+}
+
+.hamburger-menu input {
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  pointer-events: none;
+}
+
+.hamburger-menu:has(input:checked)::before {
+  rotate: 45deg;
+  width: var(--x-width);
+  translate: 0 calc(var(--bar-height) / -2);
+}
+
+.hamburger-menu:has(input:checked)::after {
+  rotate: -45deg;
+  width: var(--x-width);
+  translate: 0 calc(var(--bar-height) / 2);
+}
+
+.hamburger-menu input:checked {
+  opacity: 0;
+  width: 0;
+}
+
+.sidebar {
+  transition: translate var(--animation-timing);
+  translate: -200%;
+  padding: 0.5rem 1rem;
+  padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
+  background-color: var(--foreground);
+  color: var(--background);
+  max-width: 300px; /* Adjust this value to set the desired width */
+  min-width: 300px; /* Ensure the sidebar doesn't shrink */
+  min-height: 100vh; /* This makes the sidebar stretch down to the whole page */
+  position: fixed; /* Keep the sidebar fixed in place */
+  top: 0;
+  left: 0;
+  z-index: 2; /* Ensure the sidebar appears above other content */
+}
+
+
+.hamburger-menu:has(input:checked) + .sidebar {
+  translate: 0;
+}
+
+.hamburger-page-button {
+    border-radius: 10px;
+    background-color: #f5e6e8;
+    height: 40px;
+    font-size: 24px;
+    text-align: left;
+    padding: 1%;
+    width: 100%;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+  }
+  
+  .hamburger-page-button a {
+    font-family: Inter, sans-serif; 
+    font-size: 30px; 
+    color: #2c2c54; 
+    text-decoration: none; 
+  }
+  
+  .blur-container {
+    transition: filter 200ms ease, opacity 200ms ease;
+  }
+  
+  .blur-container.blurred {
+    filter: blur(1px);
+    opacity: 0.3;
+  }
+
+  .blur-main-content {
+    transition: filter 200ms ease, opacity 200ms ease;
+  }
+  
+  .blur-main-content.blurred {
+    filter: blur(1px);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  
+.product-backlog-container {
+    width: 100%;
+    max-width: 1272px;
+    display: flex;
+    gap: 20px;
+}
+
+.filter-bar {
+    width: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #864963;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.filter-bar h2 {
+    margin-bottom: 20px;
+}
+
+.list-card-button {
+    border-radius: 158px;
+    background-color: #f5e6e8;
+    padding: 8px 11px;
+    cursor: pointer;
+    width: 100%;
+    color: black;
+  }
+
+#asc-desc, #sort-options {
+    background-color: #f5e6e8;
+}
+
+#edit-task-form {
+    color: black;
+}
+
+.delete-task-button {
+    background-color: white;
+}
+
+.card {
+    background-color: #8D99AE;
+    border: solid 1px black;
+    margin: 0;
+    padding: 0;
+    border-radius: 20px;
+    max-height: 290px;
+    width: 276px;
+    
+}
+
+.card-header {
+    margin: 0;
+    background-color: #8D99AE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    height: 50px;
+}
+
+.card-body {
+    background-color: white;
+    margin: 1;
+    padding-left: 10px;
+    padding-top: 10px;
+    border-radius: 0 0 20px 20px;
+}
+
+.icon-holder {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+}
+
+.account-creation-container {
+border-radius: 78px;
+position: fixed;
+background-color: #F5E6E8;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 30%;
+display: flex;
+flex-direction: column;
+font-size: 32px;
+color: #2C2C54;
+font-weight: 400;
+padding: 20px 65px;
+z-index: 100;
+}
+
+
+.create-account {
+font-size: 40px;
+font-weight: 500;
+text-align: center;
+align-self: center;
+margin: 20px;
+padding: 10px;
+}
+
+.login-button {
+border-radius: 9px;
+background-color: #2c2c54;
+color: #fff;
+text-align: center;
+padding: 19px 70px;
+border: none;
+font-size: 32px;
+cursor: pointer;
+}
+
+
+
+.email,
+.password,
+.input-box,
+.login-button {
+width: 100%; 
+padding: 10px;
+margin-bottom: 20px;
+border: 1px solid black; 
+border-radius: 5px; 
+background-color:white;
+box-sizing: border-box;
+}
+
+.custom-checkbox {
+width: 20px;
+height: 20px;
+background-color: white;
+border: 2px solid #2B2D42;
+border-radius: 5px;
+display: inline-block;
+position: relative;
+cursor: pointer;
+}
+
+div input[type="checkbox"]:checked + .custom-checkbox {
+background-color: black;
+}
+
+div input[type="checkbox"]:checked + .custom-checkbox::after {
+content: '';
+position: absolute;
+left: 4px;
+top: 0px;
+width: 8px;
+height: 14px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+   

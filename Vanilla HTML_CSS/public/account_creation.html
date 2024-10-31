@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Tunnel Vision</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/contrast.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
+</head>
+<style>
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #2c2c54;
+    height: 100%;
+    z-index: -1;
+}
+
+.account-creation-container {
+  border-radius: 78px;
+  position: fixed;
+  background-color: #F5E6E8;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  font-size: 32px;
+  color: #2C2C54;
+  font-weight: 400;
+  padding: 20px 65px;
+}
+
+.create-account {
+  font-size: 40px;
+  font-weight: 500;
+  text-align: center;
+  align-self: center;
+  margin: 20px;
+  padding: 10px;
+}
+
+.login-button {
+  border-radius: 9px;
+  background-color: #2c2c54;
+  color: #fff;
+  text-align: center;
+  padding: 19px 70px;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+
+
+.logo-characteristics {
+  aspect-ratio: 2.51;
+  object-fit: contain;
+  object-position: center;
+  width: 475px;
+  max-width: 100%;
+  background-blend-mode: screen;
+}
+
+.tunnel-vision {
+  color: #fff;
+  font-size: 64px;
+  font-weight: 800;
+  text-align: center;
+  margin-top: 18px;
+}
+
+.email,
+.password,
+.input-box,
+.login-button {
+  width: 100%; 
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid black; 
+  border-radius: 5px; 
+  background-color:white;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .login-background {
+    padding: 0 20px 100px
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .tunnel-vision {
+    font-size: 40px;
+    color: #F5E6E8
+  }
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 2px solid #2B2D42;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+div input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: black;
+}
+
+div input[type="checkbox"]:checked + .custom-checkbox::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 8px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.blur-container.blur {
+  filter: blur(5px);
+  z-index: 1;
+}
+
+.account-creation-container.blur {
+  filter: blur(5px);
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+#menu-links {
+    flex-grow: 1;
+}
+
+.bottom-link {
+    display: flex;
+    align-items: center; /* Vertically centers the image and text */
+    justify-content: flex-start; 
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bottom-link img {
+    width: 150px; /* Adjust width as necessary */
+    height: 150px; /* Adjust height as necessary */
+    border-radius: 50%; /* Makes the image round */
+    margin-left: -25px;
+}
+
+.bottom-link span {
+    color: #2c2c54; /* Change text color if needed */
+    font-size: 24px; /* Adjust font size as necessary */
+    margin-left: -15px;
+}
+
+.button {
+  border-radius: 64px;
+  padding: 31px 69px;
+  cursor: pointer;
+  font: 300 20px Inter, sans-serif;
+  border: 2px solid #f5e6e8;
+  color: #fff
+}
+
+</style>
+<body>
+
+
+
+<section class="tunnel-vision-container">
+    <nav class="menu" aria-label="Navigation">
+    <label class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+    </label>
+    <aside class="sidebar">
+        <nav id="menu-links">
+            <br><br>
+            <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+            <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+            <header class="hamburger-page-button"><a href="product_backlog_page.html" style="text-decoration: underline; font-weight: bold;">Product Backlog</a></header><br>
+            <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+            <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+            <!-- New Sign Out button at the bottom -->
+            <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+        </nav>
+        <!-- Add the bottom link here -->
+        <footer class="hamburger-page-button bottom-link">
+            <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+            <span id="profile-name"class="profile-name"></span>
+        </footer>              
+    </aside>
+</nav>
+    
+    <div class="blur-container">
+      <header class="header-container">
+        <img src="Images/Logo_rose.png" class="logo-image">
+        <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+        <button id="toggle-contrast" class="button high-contrast-btn" style="width: 100px; padding: 5px 10px; font-size: 14px; cursor: pointer; background-color: orangered;">High Contrast Mode</button>
+      </header>
+    </div>
+
+    <div class="account-creation-container" id="account-container">
+        <h2 class="create-account">Create New Account!</h2>
+        <form id="create-account-form">
+          <label for="name" class="invisible" style="font-size: 15px;">Name</label>
+          <input type="text" class="input-box" style="width: 100%; 
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid black; 
+          border-radius: 5px; 
+          background-color:white;
+          box-sizing: border-box;" id="name" name="name" required>
+          <label for="email" class="invisible" style="font-size: 15px;">Email</label>
+          <input type="email" class="input-box" id="email" name="email" required>
+          <label for="password" class="invisible" style="font-size: 15px;">Password</label>
+          <input type="password" class="input-box" id="password" name="password" required>
+          <label for="confirm-password" class="invisible" style="font-size: 15px;">Confirm Password</label>
+          <input type="password" class="input-box" id="confirm-password" name="confirm-password" required>
+
+          <div style="margin-bottom: 25px;">
+            <input type="checkbox" style="display: none;" id="is-admin" name="is-admin">
+            <span for="is-admin" class="custom-checkbox" ></span>
+            <label for="is-admin" style="font-size: 15px;">Grant Admin Privileges</label>
+          </div>
+
+          <button type="submit" class="login-button" id = "loginButton" >Create account</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+  </section>
+  <script type="module" src="js/user-profile.js"></script>
+  <script>
+    const checkbox = document.getElementById('is-admin');
+    const customCheckbox = document.querySelector('.custom-checkbox');
+  
+    customCheckbox.addEventListener('click', function() {
+      checkbox.checked = !checkbox.checked; // Toggle the hidden checkbox
+      customCheckbox.classList.toggle('checked'); // Add/remove the checked style
+    });
+  
+    const label = document.querySelector('label[for="is-admin"]');
+    label.addEventListener('click', function() {
+      checkbox.checked = !checkbox.checked; // Toggle the hidden checkbox
+      customCheckbox.classList.toggle('checked'); // Add/remove the checked style
+    });
+  </script>
+  
+  <script>
+    document.getElementById('toggle-contrast').addEventListener('click', function() {
+    document.body.classList.toggle('high-contrast');
+  
+    var addButton = document.getElementById('add-team-member');
+      
+      // Check if high contrast is on, and change the image accordingly
+      if (document.body.classList.contains('high-contrast')) {
+          addButton.src = 'Images/add_button_high_contrast.png'; // High contrast image
+      } else {
+          addButton.src = 'Images/add_button.png'; // Default image
+      }
+  
+      // Get the logo image element
+    var logoImage = document.querySelector('.logo-image');
+
+    // Check if high contrast is on, and change the logo accordingly
+    if (document.body.classList.contains('high-contrast')) {
+        logoImage.src = 'Images/Logo_high_contrast.png'; // High contrast logo
+    } else {
+        logoImage.src = 'Images/Logo_rose.png'; // Default logo
+    }
+    });
+  
+  </script>
+  <script> 
+      // Hamburger menu toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const blurContainer = document.querySelector('.blur-container');
+      const accountContainer = document.getElementById('account-container');
+
+      menuToggle.addEventListener('change', function() {
+        if (menuToggle.checked) {
+          blurContainer.classList.add('blur');
+          accountContainer.classList.add('blur');
+        } else {
+          blurContainer.classList.remove('blur');
+          accountContainer.classList.remove('blur');
+        }
+      });
+  </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+        import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
+
+        //The firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+            authDomain: "tunnelvision-f07f7.firebaseapp.com",
+            databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+            projectId: "tunnelvision-f07f7",
+            storageBucket: "tunnelvision-f07f7.appspot.com",
+            messagingSenderId: "779720304073",
+            appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        function checkUserRole() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const userId = user.uid;
+                    const userRef = ref(database, 'user-accounts/' + userId);
+
+                    get(userRef).then((snapshot) => {
+                        const data = snapshot.val();
+                        if (data.isAdmin) {
+                            addAdminLink();
+                        }
+                    });
+                }
+            })
+        }
+
+        function addAdminLink() {
+            const menuLinks = document.getElementById('menu-links');
+        
+            // Add a <br> for spacing
+            const lineBreak = document.createElement('br');
+            menuLinks.appendChild(lineBreak);
+        
+            // Create the "Create Account" link
+            const adminLink = document.createElement('header');
+            adminLink.classList.add('hamburger-page-button');
+            adminLink.innerHTML = '<a href="account_creation.html" style="text-decoration: underline; font-weight: bold;">Create Account</a>';
+        
+            // Append the "Create Account" link after the "Team" link
+            const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4]; 
+            teamLink.insertAdjacentElement('afterend', lineBreak);
+            lineBreak.insertAdjacentElement('afterend', adminLink);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserRole();
+        });
+      
+
+        document.getElementById('create-account-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const message = document.getElementById('message');
+            const isAdmin = document.getElementById('is-admin').checked;
+            const name = document.getElementById('name').value;
+
+            // Validate password confirmation
+            if (password !== confirmPassword) {
+                message.textContent = "Passwords do not match!";
+                message.style.color = "red";
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    
+                  const user = userCredential.user;
+                  const userId = user.uid;
+
+                  set(ref(database, 'user-accounts/' + userId), {
+                    userID: userId,
+                    name: name,
+                    email: email,
+                    password: password,
+                    isAdmin: isAdmin,
+                    status: false,
+                    inSprint: false,
+                    pfp: "images/default-profile-pic.png"
+                  }).then(() => {
+                    message.textContent = "Account created successfully!";
+                    message.style.color = "green";
+                    setTimeout(() => {
+                      window.location.href = "account_creation.html";
+                    }, 1000);
+                    })
+                  }).catch((error) => {
+                    console.error('Error creating account:', error);
+                    message.textContent = "Failed to Create New Account.";
+                    message.style.color = "red";
+                  })
+            
+        });
+    </script>
+</body>
+</html>

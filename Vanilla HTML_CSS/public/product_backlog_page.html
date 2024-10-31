@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Backlog - Tunnel Vision</title>
+    <link rel = "stylesheet" href="css/styles.css">
+    <link rel = "stylesheet" href= "css/timelog.css" >
+    <link rel="stylesheet" href="css/profilePicturestyling.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="css/contrast.css">
+</head>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #2c2c54;
+        height: 100%;
+    }
+
+    .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+#menu-links {
+    flex-grow: 1;
+}
+
+.bottom-link {
+    display: flex;
+    align-items: center; /* Vertically centers the image and text */
+    justify-content: flex-start; 
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bottom-link img {
+    width: 150px; /* Adjust width as necessary */
+    height: 150px; /* Adjust height as necessary */
+    border-radius: 50%; /* Makes the image round */
+    margin-left: -25px;
+}
+
+.bottom-link span {
+    color: #2c2c54; /* Change text color if needed */
+    font-size: 24px; /* Adjust font size as necessary */
+    margin-left: -15px;
+}
+
+.button {
+  border-radius: 64px;
+  padding: 31px 69px;
+  cursor: pointer;
+  font: 300 20px Inter, sans-serif;
+  border: 2px solid #f5e6e8;
+  color: #fff
+}
+
+</style>
+<body>
+
+
+
+<section class="tunnel-vision-container">
+    <nav class="menu" aria-label="Navigation">
+    <label class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+    </label>
+    <aside class="sidebar">
+        <nav id="menu-links">
+            <br><br>
+            <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+            <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+            <header class="hamburger-page-button"><a href="product_backlog_page.html" style="text-decoration: underline; font-weight: bold;">Product Backlog</a></header><br>
+            <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+            <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+            <!-- New Sign Out button at the bottom -->
+            <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+        </nav>
+        <!-- Add the bottom link here -->
+        <footer class="hamburger-page-button bottom-link">
+            <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+            <span id="profile-name"class="profile-name"></span>
+        </footer>              
+    </aside>
+</nav>
+
+
+
+
+
+    
+    <div class="blur-container">
+        <header class="header-container">
+            <img src="Images/Logo_rose.png" class="logo-image">
+            <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+            <button id="toggle-contrast" class="button high-contrast-btn" style="width: 100px; padding: 5px 10px; font-size: 14px; cursor: pointer; background-color: orangered;">High Contrast Mode</button>
+        </header>
+    
+    
+
+        <h2 class="page-title">Product Backlog</h2>
+
+
+        <!--Delete message has to be above the body content-->
+        <div id="deleteMessage" class="modal">
+            <div class="modal-content">
+                <p>Are you sure?</p>
+                <button class="delete-task-button" id="yes-confirm">Yes</button>
+                <button class="delete-task-button" id="no-confirm">No</button>
+            </div>
+        </div>
+
+        
+
+        <div id= "blur-main-content" class="blur-main-content">
+
+
+            
+
+
+
+            
+
+
+
+            <div class="sort-controls">
+                <div class ="addTask-filter-reset-buttons">
+                    <!-- Add Task Button -->
+                    <img src="Images/add_button.png" id="addTaskBtn"/>
+                    <!-- Filter button -->
+                    <img src="Images/filter_icon.png" id="filterBtn"/>
+                    <!-- Reset button -->
+                    <img src="Images/reset_button.png" id="resetBtn"/>
+                </div>
+
+                <div class="filter-and-sort-container">
+                    <div class="buttons-container">
+                        <button class="list-card-button" id="list-view-button">List</button>
+                        <button class="list-card-button" id="card-view-button">Card</button>
+                    </div>
+                </div>
+                
+                <div class="sort-controls-box">
+                    <label for="sort-options"></label>
+                    <select id="sort-options">
+                    <option value="" disabled >Sort By</option>
+                    <option value="backlog-priority">Backlog Priority</option>
+                    <option value="title">Task Title</option>
+                    <option value="status">Status</option>
+                    <option value="story-points">Story Points</option>
+                    </select>
+                    
+                    <select id="asc-desc">
+                    <option value="" disabled >Order</option>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <!--This is a toggle button for switching between list and card view of the tasks-->
+            
+            
+            
+            <!-- Creating the Product Backlog Table (LIST VIEW) -->
+            <div class="tables-container" id="list-view">
+                <table class="table-left" id="product-backlog-table">
+                    <thead>
+                        
+                        <th>Task Title</th>
+                        <th>Tag</th>
+                        <th>Backlog Priority</th>
+                        <th>Story Points</th>
+                        <th>Stage</th>
+                        <th>Status</th>
+                        <th></th>
+                        
+                        
+                    </thead>
+                    <tr>
+                        <tbody id="product-backlog-body">
+                            <!-- Rows will be added dynamically here -->
+                        </tbody>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Creating the Product Backlog Table (CARD VIEW) -->
+            <div class="card-view hide" id="card-view">
+                <!---......................-->
+                <!-- This is where the product backlog tasks in card view form go in-->
+                <!---............and so on.........-->
+
+            </div>
+
+            <div id="view-more-screen" class="view-more-modal">
+                <div class="view-more-modal-content" style="width: 50%;">
+                    <span class="close" id="close-view-more" style="color: black;">&times;</span>
+
+                    <h2 style="color: black">Task Details</h2>
+                    <div id="task-details">
+                        <!-- Task details will be populated here -->
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div id = "addTaskPopup" class = "popup style" style="display: none;">
+            <button class = "closeAddTask" id="close-add-task-btn" style="color: black;">Close</button>
+
+            <!-- Form to Add a New Row -->
+            
+        </div>
+
+        <form id="add-product-requirement-backlog" style="max-height: 80vh; overflow-y: auto; padding: 20px; box-sizing: border-box;">
+            <span class="close" id="close-add-PB-task-form" style="color: black;">&times;</span><br>
+            <label for="task-title">Title</label>
+            <input type="text" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" id="task-title" name="task-title" required>
+
+                
+            <label for="description">Description</label>
+            <textarea id="description" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" id="description" name="description" placeholder="Enter task description here..." maxlength="1000" rows="5" required></textarea>
+
+
+            <label for="tag">Tag</label>
+            <select id="tag" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" name="tag[]" multiple="multiple" >
+                <option value="front-end">Front End</option>
+                <option value="back-end">Back End</option>
+                <option value="API">API</option>
+                <option value="Databases">Databases</option>
+                <option value="Framework">Framework</option>
+                <option value="Testing">Testing</option>
+                <option value="UI">UI</option>
+                <option value="UX">UX</option>
+            </select>
+
+            <label for="backlog-priority">Backlog Priority</label>
+            <select id="backlog-priority" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" name="backlog-priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="Important">Important</option>
+                <option value="Urgent">Urgent</option>
+            </select>
+
+            <label for="story-points">Story Points</label>
+            <select id = "story-points" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" name = "story-points" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            
+
+            <label for="current-stage">Current Stage</label>
+            <select id="current-stage" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"  name="current-stage" required>
+                <option value="planning">Planning</option>
+                <option value="development">Development</option>
+                <option value="testing">Testing</option>
+                <option value="integration">Integration</option>
+            </select>
+
+            <label for="assignee">Assignee</label>
+            <select id="assignee" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" name="assignee" required>
+                <option value="No-Assignee">No Assignee</option>
+            </select>
+
+            <label for="status">Status</label>
+            <select id="status" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" name="status" required>
+                <option value="Not Started">Not Started</option>
+            </select>
+
+
+
+            <button id="submit-new-task" style="background-color: #2c2c54;">Add Task</button>
+        </form>
+
+
+        <!-- Popup menu -->
+    
+        <div id="filterPopup" class="popup">
+            <button class="close-btn" style="display: none;">Close</button>
+            
+        </div>
+
+        <form id="filter-function">
+            <span class="close" id="close-filter-form" style="color: black;">&times;</span><br>
+            <h2 style="display: flex; justify-content: flex-start;">Filter By</h2>
+            <div class="filter-option">
+                <label for="filter-priority">Priority</label>
+                <select id="filter-priority" style="width: 100%; 
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid black; 
+                border-radius: 5px; 
+                background-color:white;
+                box-sizing: border-box;">
+                    <option value="">Any</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Important">Important</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+            </div>
+
+            <div class="filter-option">
+                <label for="filter-tag">Tag</label>
+                <select id="filter-tag" style="width: 100%; 
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid black; 
+                border-radius: 5px; 
+                background-color:white;
+                box-sizing: border-box;">
+                    <option value="">Any</option>
+                    <option value="front-end">Front End</option>
+                    <option value="back-end">Back End</option>
+                    <option value="API">API</option>
+                    <option value="Databases">Databases</option>
+                    <option value="Framework">Framework</option>
+                    <option value="Testing">Testing</option>
+                    <option value="UI">UI</option>
+                    <option value="UX">UX</option>
+                </select>
+            </div>
+
+            <div class="filter-option">
+                <label for="filter-story-points">Story Points</label>
+                <select id="filter-story-points" style="width: 100%; 
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid black; 
+                border-radius: 5px; 
+                background-color:white;
+                box-sizing: border-box;">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="filter-option">
+                <label for="filter-status">Status</label>
+                <select id="filter-status" style="width: 100%; 
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid black; 
+                border-radius: 5px; 
+                background-color:white;
+                box-sizing: border-box;">
+                    <option value="">Any</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="Complete">Complete</option>
+                    <option value="In Progress">In Progress</option>
+                </select>
+            </div>
+            <button type="click" id="applyBtn">Apply</button>
+        </form>
+
+        <form id="edit-task-form" class="editForm" style="background-color: white;">
+            <span class="close" id="close-edit-task-form" style="color: black;">&times;</span><br>
+            <h3>Edit Task</h3>
+
+            <label for="edit-task-title">Title</label>
+            <input type="text" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-task-title" name="task-title" required>
+
+            <label for="edit-description" >Description</label>
+            <textarea style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" id="edit-description" name="description" maxlength="1000" rows="5" required></textarea>
+
+            <label for="edit-tag">Tag</label>
+            <select id="edit-tag" name="tag[]" multiple="multiple">
+                <option value="front-end">Front End</option>
+                <option value="back-end">Back End</option>
+                <option value="API">API</option>
+                <option value="Databases">Databases</option>
+                <option value="Framework">Framework</option>
+                <option value="Testing">Testing</option>
+                <option value="UI">UI</option>
+                <option value="UX">UX</option>
+            </select>
+
+            <label for="edit-backlog-priority">Backlog Priority</label>
+            <select style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-backlog-priority" name="backlog-priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="Important">Important</option>
+                <option value="Urgent">Urgent</option>
+            </select>
+
+            <label for="edit-story-points">Story Points</label>
+            <select style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-story-points" name="story-points" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+
+            <label for="edit-current-stage">Current Stage</label>
+            <select style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-current-stage" name="current-stage" required>
+                <option value="planning">Planning</option>
+                <option value="development">Development</option>
+                <option value="testing">Testing</option>
+                <option value="integration">Integration</option>
+            </select>
+
+            <label for="edit-assignee">Assignee</label>
+            <select style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-assignee" name="assignee" required>
+            </select>
+
+            <label for="edit-status">Status</label>
+            <select style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;"id="edit-status" name="status" required>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Complete">Complete</option>
+            </select>
+
+            <div style="display: flex; gap: 10px">
+                <button id="save-edit-btn" style="background-color: #2c2c54">Save Changes</button>
+                <button type="button" style="background-color: #7a1012;"id="delete-edit-btn">Delete</button>
+            </div>
+            
+        </form>
+    </div>
+    <script>
+        document.getElementById('toggle-contrast').addEventListener('click', function() {
+        document.body.classList.toggle('high-contrast');
+      
+        var addButton = document.getElementById('addTaskBtn');
+          
+          // Check if high contrast is on, and change the image accordingly
+          if (document.body.classList.contains('high-contrast')) {
+              addButton.src = 'Images/add_button_high_contrast.png'; // High contrast image
+          } else {
+              addButton.src = 'Images/add_button.png'; // Default image
+          }
+      
+          // Get the logo image element
+          var logoImage = document.querySelector('.logo-image');
+      
+          // Check if high contrast is on, and change the logo accordingly
+          if (document.body.classList.contains('high-contrast')) {
+              logoImage.src = 'Images/Logo_high_contrast.png'; // High contrast logo
+          } else {
+              logoImage.src = 'Images/Logo_rose.png'; // Default logo
+          }
+
+          // Get the logo image element
+          var filterButtonHC = document.getElementById('filterBtn');
+      
+          // Check if high contrast is on, and change the logo accordingly
+          if (document.body.classList.contains('high-contrast')) {
+              filterButtonHC.src = 'Images/filter_icon_high_contrast.png'; // High contrast logo
+          } else {
+              filterButtonHC.src = 'Images/filter_icon.png'; // Default logo
+          }
+
+          // Get the logo image element
+          var resetButtonHC = document.getElementById('resetBtn');
+      
+          // Check if high contrast is on, and change the logo accordingly
+          if (document.body.classList.contains('high-contrast')) {
+              resetButtonHC.src = 'Images/reset_button_high_contrast.png'; // High contrast logo
+          } else {
+              resetButtonHC.src = 'Images/reset_button.png'; // Default logo
+          }
+        });
+      
+      </script>
+    <script>
+        // Get the checkbox and blur-container elements
+        const menuToggle = document.getElementById('menu-toggle');
+        const blurContainer = document.querySelector('.blur-container');
+      
+        // Event listener for the checkbox
+        menuToggle.addEventListener('change', function() {
+          // Toggle the blurred class on the blur-container
+          if (menuToggle.checked) {
+            blurContainer.classList.add('blurred');
+          } else {
+            blurContainer.classList.remove('blurred');
+          }
+        });
+    </script>
+
+
+    <script type="module" src="js/user-profile.js"></script>
+    
+
+    <!--Define the firebase modules-->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
+
+    <!--Define js files here-->
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-analytics.js";
+        import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
+
+        //import some of the commands we need from the firebase js library
+        //https://modularfirebase.web.app/reference/database <-- refer to this for the list of commands 
+
+        import { getDatabase, ref, set, push, child, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+
+        
+        import { addTaskTimeLog, closeTimeLog } from './js/addTaskContributionLog.js';
+        import {closeViewMore, viewMoreTaskSprint} from './js/addTaskViewMore.js';
+        import {closeEditTaskForm} from './js/editTask.js';
+        import {closePBTaskForm} from './js/addPBTask.js';
+        import {closeFilterForm} from './js/filter.js';
+        
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+            authDomain: "tunnelvision-f07f7.firebaseapp.com",
+            databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+            projectId: "tunnelvision-f07f7",
+            storageBucket: "tunnelvision-f07f7.appspot.com",
+            messagingSenderId: "779720304073",
+            appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+        };
+
+        // Initialise Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        //We need a global variable here: this is needed to keep track of filtered tables and how to sort them
+        let filteredData = [];
+
+        /*
+        ---------------------------------------------------------------------------------
+        Fetching and displaying (populating the table) the data
+        Also includes the view more popup when clicked on the row
+        ---------------------------------------------------------------------------------
+        */
+
+        function checkUserRole() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const userId = user.uid;
+                    const userRef = ref(database, 'user-accounts/' + userId);
+
+                    get(userRef).then((snapshot) => {
+                        const data = snapshot.val();
+                        if (data.isAdmin) {
+                            addAdminLink();
+                        }
+                    });
+                }
+            })
+        }
+
+        function addAdminLink() {
+            const menuLinks = document.getElementById('menu-links');
+        
+            // Add a <br> for spacing
+            const lineBreak = document.createElement('br');
+            menuLinks.appendChild(lineBreak);
+        
+            // Create the "Create Account" link
+            const adminLink = document.createElement('header');
+            adminLink.classList.add('hamburger-page-button');
+            adminLink.innerHTML = '<a href="account_creation.html">Create Account</a>';
+        
+            // Append the "Create Account" link after the "Team" link
+            const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4]; 
+            teamLink.insertAdjacentElement('afterend', lineBreak);
+            lineBreak.insertAdjacentElement('afterend', adminLink);
+        }
+         
+
+  
+
+        function fetchAndDisplayData() {
+            const dbRef = ref(database, 'product-backlog/');
+            
+            onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+                const dataArray = [];
+                
+                if (data) {
+                    for (const key in data) {
+                        data[key].taskId = key;  // Add the Firebase key to the task data
+                        dataArray.push(data[key]);
+                    }
+                }
+
+                applyFilter(dataArray);  // Apply filters to the fetched data
+
+            }, (error) => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+
+        function populateTable(dataArray) {
+            const tableBody = document.getElementById('product-backlog-body');
+            const cardView = document.getElementById("card-view");
+            tableBody.innerHTML = ''; // Clear existing rows to prevent duplicates
+            cardView.innerHTML = ''; // Clear existing cards
+
+            console.log(dataArray)
+
+            if (dataArray.length > 0) {
+                dataArray.forEach((row, index) => {
+
+                    if (row.assignedToSprint == 'None'){
+                        // Create and populate table row
+                        const newRow = document.createElement('tr');
+                        newRow.append(
+                            createCell(row.val1_title),
+                            createCell(row.val3_tag),
+                            createCell(row.val4_priority),
+                            createCell(row.val5_points),
+                            createCell(row.val6_stage),
+                            createCell(row.val7_status)
+                        );
+
+                        // Create the Edit button
+                        const editButton = document.createElement('img');
+                        editButton.src = 'Images/edit_icon.png';
+                        editButton.style.width = '50px';
+                        editButton.style.height = '50px';
+
+                        editButton.onclick = (event) => {
+                            // Prevents the row click event from activating and fixing the issue we had earlier
+                            event.stopPropagation(); 
+                            //Thus, only open the edit form
+                            showAssigneesEdit(row.assignee);
+                            openEditForm(row, index); 
+                        };
+
+                        //Create Time Log for that task:
+
+                        /*
+                        const timeLogButton = document.createElement('img');
+                        timeLogButton.src = 'Images/timelog_icon.png';
+                        timeLogButton.style.width = '50px';
+                        timeLogButton.style.height = '50px';
+
+                        timeLogButton.addEventListener('click', function(event){
+                            event.stopPropagation();
+
+                            addTaskTimeLog(row, index);
+                        });                       
+                        */
+
+
+
+                        //Create the edit cell/column
+                        const editCell = document.createElement('td');
+                        //This changes the width of the edit button column to make it more distinct
+                        editCell.style.width = '500px'; 
+                        editCell.style.textAlign = 'center'; 
+                        editCell.style.padding = '10px'; 
+
+                        editCell.appendChild(editButton);
+                        //editCell.appendChild(timeLogButton);
+
+                        newRow.appendChild(editCell);
+
+                        // Add click listener to the row and CSS styling for the row
+                        
+                        newRow.style.cursor = 'pointer'; // Change cursor to pointer for better UX and distinction: the "finger pointer"
+                        
+                        newRow.addEventListener('click', () => viewMoreTaskSprint(row, row.taskId)); // we can change the succeeding popup later
+
+                        // Append to list view
+                        tableBody.appendChild(newRow);
+                    
+
+
+                        // Create and populate card view
+                        const newCard = document.createElement('div');
+                        newCard.classList.add('card');
+                        
+                        newCard.innerHTML = `
+                            <div class="card-header">
+                                <h4 style="background-color: #8D99AE">${row.val1_title}</h4>
+                            </div>
+                        `;
+
+                        const cardBody = document.createElement('div');
+                        cardBody.classList.add('card-body')
+                        cardBody.innerHTML = `
+                            <p><strong>Tag:</strong> ${row.val3_tag}</p>
+                            <p><strong>Priority:</strong> ${row.val4_priority}</p>
+                            <p><strong>Story Points:</strong> ${row.val5_points}</p>
+                            <p><strong>Stage:</strong> ${row.val6_stage}</p>
+                            <p><strong>Status:</strong> ${row.val7_status}</p>
+                        `;
+
+                        const iconHolder = document.createElement('div');
+                        iconHolder.classList.add('icon-holder');
+                        iconHolder.innerHTML = ``;
+
+                        //Create edit button for card:
+                        const editButtonCard = document.createElement('img');
+                        editButtonCard.src = 'Images/edit_icon.png';
+                        editButtonCard.style.width = '50px';
+                        editButtonCard.style.height = '50px';
+                        editButtonCard.classList.add('edit-button');
+                        
+                        //we do not need to pass in newCard into the edit form
+                        //just use the row stated previously
+                        editButtonCard.addEventListener('click', (event) => {
+                            event.stopPropagation();
+                            showAssigneesEdit(row.assignee);
+                            openEditForm(row, index);
+                        });
+                        
+                        /*
+                        const timeLogCard = document.createElement('button');
+                        timeLogCard.textContent = "Add Time Log"
+
+                        timeLogCard.addEventListener('click', function(event){
+                            event.stopPropagation();
+                            addTaskTimeLog(row, index);
+                        });
+                        */
+
+
+                        newCard.append(cardBody);
+                        cardBody.append(iconHolder);
+
+                        //Add edit button 
+                        cardBody.append(editButtonCard);
+
+
+                        //Add the time log button
+                        //newCard.append(timeLogCard);
+                        
+
+
+
+
+
+                        // Add click listener to the row
+                        newCard.style.cursor = "pointer"; // Change cursor to pointer for better UX and distinction: the "finger pointer"
+                        newCard.addEventListener("click", () => viewMoreTaskSprint(row, row.taskId));
+                        // Append to card view
+                        cardView.appendChild(newCard);
+
+
+
+
+                    }
+
+                });
+            }
+        }
+
+
+
+        /*
+        ---------------------------------------------------------------------------------
+        Features below refer to the "Add New Task Feature" 
+        ---------------------------------------------------------------------------------
+        */
+
+        // Helper function to create table cells
+        function createCell(data) {
+            const cell = document.createElement('td');
+            cell.textContent = data;
+            return cell;
+        }
+        // Function to check if a value is null, undefined, or an empty string
+        function isEmpty(value) {
+            return value === null || value === undefined || value.trim() === '';
+        }
+
+
+        function toggleAddTaskPopup() {
+            
+
+            const addTaskPopup = document.getElementById('addTaskPopup');
+            addTaskPopup.style.display = addTaskPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function save() {
+            var taskTitle = document.getElementById("task-title").value;
+            var description = document.getElementById("description").value;
+            
+            //Turning multiple selected options into an array
+            const selectedOptions = Array.from(document.getElementById('tag').selectedOptions);
+
+            var tag = selectedOptions.map(option => option.value);
+
+            console.log(tag)
+
+
+            var backlogPriority = document.getElementById("backlog-priority").value;
+            var storyPoints = document.getElementById("story-points").value;
+            var currStage = document.getElementById("current-stage").value;
+            var status = document.getElementById("status").value;
+            
+
+            //Get the assignee:
+            var assigneeSelected = document.getElementById("assignee").value;
+            console.log(assigneeSelected)
+
+
+            // Check if any value is empty
+            if (isEmpty(taskTitle) || isEmpty(description) || tag.length === 0 || isEmpty(backlogPriority) || isEmpty(storyPoints) || isEmpty(currStage) || isEmpty(status)) {
+                alert("One or more fields are empty or null.");
+                return;
+            }
+
+            //Create a unique primary key for the task (unique identifier)
+            //we dont need to specify the path as firebase will automatically generate a new node
+            const Id = push(child(ref(database), 'product-backlog')).key;
+
+            set(ref(database, 'product-backlog/' + Id), {
+                assignee: assigneeSelected,
+                assignedToSprint: 'None',
+                accumulatedEffort: 0,
+                val7_status: status,
+                val6_stage: currStage,
+                val5_points: storyPoints,
+                val4_priority: backlogPriority,
+                val3_tag: tag,
+                val2_desc: description,
+                val1_title: taskTitle
+            }).then(() => {
+                initialise_history_task(Id, description);
+
+                // Reset the input fields and close the form after successful submission
+                resetTaskFields();
+                closePBTaskForm();
+
+            }).catch((error) => {
+                console.error('Error saving data:', error);
+            });
+
+        
+        }
+
+        function initialise_history_task(Id, description){
+
+            //After we save it into the product backlog database, we also want to keep track of the history log of the task
+            //and keep track on when it was published
+            const curr_time = new Date().toLocaleString("en-AU", {
+                timeZone: "Australia/Sydney",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            });
+
+            set(ref(database, 'task-history-logs/'+ Id), {
+
+                t1_created: curr_time,
+                t2_last_modified:curr_time,
+                t3_history: [
+
+                    {
+                        event: 'Creation and Initialisation of Task Entry',
+                        timestamp: curr_time,
+                        details: description
+                    }
+                ]
+            }).then(() =>{
+                console.log("The Task History log is saved!");
+
+            }).catch((error) => {
+                console.error("There was an error when saving the task history log: ", error)
+            });
+        }
+
+
+
+
+        /*
+        ---------------------------------------------------
+        Editing the product backlog task
+        ---------------------------------------------------
+        */
+
+        function openAddPBTask() {
+            document.getElementById('add-product-requirement-backlog').style.display = 'block';
+            document.querySelector(".blur-main-content").classList.add("blurred")
+        }
+
+        function openFilter() {
+            document.getElementById('filter-function').style.display = 'block';
+            document.querySelector(".blur-main-content").classList.add("blurred")
+        }
+
+
+        function openEditForm(rowData, index) {
+            
+            console.log(rowData)
+            console.log(rowData.assignee)
+            // Show the edit form
+            document.getElementById('edit-task-form').style.display = 'block';
+            document.querySelector(".blur-main-content").classList.add("blurred");
+
+
+            
+
+            // Populate the form with the current task details
+            document.getElementById('edit-task-title').value = rowData.val1_title;
+            document.getElementById('edit-description').value = rowData.val2_desc;
+            document.getElementById('edit-backlog-priority').value = rowData.val4_priority;
+            document.getElementById('edit-story-points').value = rowData.val5_points;
+            document.getElementById('edit-current-stage').value = rowData.val6_stage;
+            document.getElementById('edit-status').value = rowData.val7_status;
+            document.getElementById('edit-assignee').value = rowData.assignee;
+
+            
+        
+            // Set the tags (for select2 multi-select)
+            const tags = rowData.val3_tag; // Assuming this is an array of tags
+            $('#edit-tag').val(tags).trigger('change'); // Set the selected tags and trigger change event for select2
+
+            document.getElementById('edit-task-form').dataset.index = index;
+
+
+            // If the client clicks on the delete button, delete the task
+            document.getElementById("delete-edit-btn").onclick = function(event) {
+                deleteTask(rowData, index);
+            };
+
+            //For the task history log, we want to show the previous and after changes of the task:
+            //This dict is reset each time
+            let task_versions = {};
+            let keys = ['assignee', 'accumulatedEffort', 'assignedToSprint', 'Task Title', 'Task Description', 'Task Tag', 'Task Priority', 'Task Points', 'Task Stage', 'Task Status'];
+            
+            for (let i=0; i<keys.length; i++){
+                var curr_key = keys[i];
+                task_versions[curr_key] =[]
+            }
+            
+            //Store the current version at index 0 of each respective list
+            task_versions['assignee'].push(rowData.assignee);
+            task_versions['accumulatedEffort'].push(rowData.accumulatedEffort);
+            task_versions['assignedToSprint'].push(rowData.assignedToSprint);
+            task_versions['Task Title'].push(document.getElementById('edit-task-title').value);
+            task_versions['Task Description'].push(document.getElementById('edit-description').value);
+            task_versions['Task Tag'].push(rowData.val3_tag);
+            task_versions['Task Priority'].push(document.getElementById('edit-backlog-priority').value);
+            task_versions['Task Points'].push(document.getElementById('edit-story-points').value);
+            task_versions['Task Stage'].push(document.getElementById('edit-current-stage').value);
+            task_versions['Task Status'].push(document.getElementById('edit-status').value);
+            
+            console.log(task_versions)
+
+            // Add an event listener to the Save Changes button
+            document.getElementById('save-edit-btn').onclick = function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally. We can comment this out/uncomment depending on user needs
+
+                const saveBtn = document.getElementById('save-edit-btn');
+                saveBtn.disabled = true; 
+
+
+
+                const index = document.getElementById('edit-task-form').dataset.index;
+                let newHist = [];
+                //Grab the updated tags
+                for (let i=0; i<(document.getElementById('edit-tag').options).length; i++){
+
+                    const option = document.getElementById('edit-tag').options[i];
+
+                    if (document.getElementById('edit-tag').options[i].selected){
+                        newHist.push(option.value);
+                    }
+                }
+
+                //Grab updated team member:
+                const newAssignee = document.getElementById("edit-assignee").value
+                console.log(newAssignee)
+
+
+
+
+                if (
+                    isEmpty(document.getElementById('edit-task-title').value) ||
+                    isEmpty(document.getElementById('edit-description').value) ||
+                    newHist.length === 0 || 
+                    isEmpty(document.getElementById('edit-backlog-priority').value) ||
+                    isEmpty(document.getElementById('edit-story-points').value) ||
+                    isEmpty(document.getElementById('edit-current-stage').value) ||
+                    isEmpty(document.getElementById('edit-status').value)
+                ) {
+                    alert("One or more fields are empty or null.");
+                    saveBtn.disabled = false; // Re-enable button
+                    return;
+                }
+            
+                const updatedTask = {
+                    assignee: newAssignee,
+                    accumulatedEffort: rowData.accumulatedEffort,
+                    assignedToSprint: rowData.assignedToSprint,
+                    val1_title: document.getElementById('edit-task-title').value,
+                    val2_desc: document.getElementById('edit-description').value,
+                    val3_tag: newHist,
+                    val4_priority: document.getElementById('edit-backlog-priority').value,
+                    val5_points: document.getElementById('edit-story-points').value,
+                    val6_stage: document.getElementById('edit-current-stage').value,
+                    val7_status: document.getElementById('edit-status').value,
+                };
+                console.log(updatedTask)
+
+                //Store the new version at index 1 of each respective list
+                task_versions['assignee'].push(newAssignee)
+                task_versions['accumulatedEffort'].push(rowData.accumulatedEffort);
+                task_versions['assignedToSprint'].push(rowData.assignedToSprint);
+                task_versions['Task Title'].push(document.getElementById('edit-task-title').value);
+                task_versions['Task Description'].push(document.getElementById('edit-description').value);
+                task_versions['Task Tag'].push(newHist);
+                task_versions['Task Priority'].push(document.getElementById('edit-backlog-priority').value);
+                task_versions['Task Points'].push(document.getElementById('edit-story-points').value);
+                task_versions['Task Stage'].push(document.getElementById('edit-current-stage').value);
+                task_versions['Task Status'].push(document.getElementById('edit-status').value);
+
+                console.log(task_versions)
+
+
+                const taskId = filteredData[index].taskId; // Fetch the taskId from the filtered data
+
+                // Update task in Firebase
+                set(ref(database, 'product-backlog/' + taskId), updatedTask)
+                    .then(() => {
+                        
+                        fetchAndDisplayData(); // Refresh the table
+                        //Update history log
+                        update_task_history_edit(taskId, task_versions);
+                        closeEditTaskForm(); // Close the edit form
+                        saveBtn.disabled = false; // Re-enable button
+                    })
+                    .catch(error => {
+                        console.error('Error updating task:', error);
+                        saveBtn.disabled = false;
+                    });
+            };
+        }
+
+        function update_task_history_edit(Id, task_versions) {
+    
+            const taskHistoryRef = ref(database, 'task-history-logs/' + Id);
+
+            // Fetch the current history log
+            get(taskHistoryRef).then((snapshot) => {
+
+                //check if the snap shot exists
+               
+                if (snapshot.exists()) {
+
+                    const historyData = snapshot.val();
+
+                    // Get the current timestamp
+                    const curr_time = new Date().toLocaleString("en-AU", {
+                        timeZone: "Australia/Sydney",
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                    });
+
+                    const changeDetails = getTaskChanges(task_versions)
+
+
+                    // Create the new history entry
+                    const newEntry = {
+                        event: "Updated and Saved Any Changes",
+                        timestamp: curr_time,
+                        details: changeDetails
+                    };
+
+             
+                    // Append the new entry to the history array
+                    if (Array.isArray(historyData.t3_history)) {
+                        historyData.t3_history.push(newEntry);
+                    } else {
+                        // In case the history log is not an array, initialise it as new entry array
+                        historyData.t3_history = [newEntry];
+                    }
+
+                    // Update the last modified timestamp
+                    historyData.t2_last_modified = curr_time;
+
+                    // Save the updated history back to the database
+                    set(taskHistoryRef, historyData).then(() => {
+
+                        console.log("Task history updated successfully!");
+
+                    }).catch((error) => {
+                        
+                        console.error("Error updating task history:", error);
+                    });
+
+                } else {
+                    console.error("Task history not found for task ID:", Id);
+                }
+            }).catch((error) => {
+                console.error("Error fetching task history:", error);
+            });
+        }
+
+
+        function getTaskChanges(task_versions){
+
+            console.log(task_versions)
+
+            let changeString = "";
+
+           
+
+            for (const key in task_versions){
+                
+                
+                const curr_version_histories = task_versions[key];
+                
+                //Prev ver
+                const prev_task = curr_version_histories[0];
+                //New Change
+                const new_task = curr_version_histories[1];
+
+                //Now, we only want the changes the are actually different to the previous
+                if (Array.isArray(prev_task) && Array.isArray(new_task)){
+
+                    if (JSON.stringify(prev_task) === JSON.stringify(new_task)){
+                        continue;
+                    }else{
+                        changeString += `${key} changed from "${prev_task}" -------> "${new_task}".\n`;
+                    }
+                } else if (prev_task !== new_task){
+                    console.log("pol")
+                    console.log(curr_version_histories)
+                    changeString += `${key} changed from "${prev_task}" -------> "${new_task}".\n`;
+                }
+
+            }
+
+
+            return changeString;
+
+
+        }
+
+
+
+
+        function deleteTask(data, task_index) {
+
+            //close the edit form first
+            closeEditTaskForm()
+
+            //Then, we display the message
+            modal.style.display = "block";
+
+            document.getElementById('yes-confirm').addEventListener('click', () => {
+                
+
+                modal.style.display = "none";
+                
+                
+                // Get the task id of the task you want to delete
+                const delete_taskID = data.taskId;
+
+                // Reference
+                const taskReference = ref(database, 'product-backlog/' + delete_taskID);
+
+                // Delete the task in the real-time database on Firebase
+                remove(taskReference);
+
+                //Now, we need to delete the corresponding history log associated with the deleted task:
+                const historyReference = ref(database, 'task-history-logs/' + delete_taskID);
+
+                remove (historyReference)
+
+
+
+                //alert("Product Backlog Task has been deleted!");
+            });
+
+            document.getElementById('no-confirm').addEventListener('click', () => {
+                modal.style.display = "none"; 
+                alert("Failed to delete the task. Please try again.");
+            });
+
+        }
+
+        /*
+        -------------------------------
+        Filtering Feature
+        -------------------------------
+        */
+
+        function applyFilter(data) {
+            // Retrieve filter values and convert to lower case for case-insensitive comparison
+            const priorityFilter = document.getElementById('filter-priority').value.toLowerCase();
+            const storyPointsFilter = document.getElementById('filter-story-points').value.toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value.toLowerCase();
+            const tagFilter = document.getElementById('filter-tag').value;
+            
+            // Filter data
+            filteredData = data.filter(item => {
+                return (!priorityFilter || item.val4_priority.toLowerCase() === priorityFilter) &&
+                    (!storyPointsFilter || item.val5_points.toLowerCase() === storyPointsFilter) &&
+                    (!statusFilter || item.val7_status.toLowerCase() === statusFilter) &&
+                    (!tagFilter || item.val3_tag.includes(tagFilter));
+            });
+
+            // Apply sorting after filtering, so we only populate the table once
+            sortingTasks(filteredData);
+        }
+
+        function togglePopup() {
+            const popup = document.getElementById('filterPopup');
+            popup.style.display = popup.style.display === 'none' || popup.style.display === '' ? 'none' : 'none';
+        }
+
+
+        /*
+        --------------------------------------------------------------------------
+        Sorting product backlog tasks adn reset filterSort applications
+        --------------------------------------------------------------------------
+        */
+
+        function sortingTasks() {
+            // Grab the sort value chosen
+            const selectedSortOption = document.getElementById('sort-options').value;
+            const ascend_or_descend = document.getElementById('asc-desc').value;
+
+            console.log(selectedSortOption);
+            console.log(ascend_or_descend);
+
+            // Copy filtered data for sorting
+            const sortedData = [...filteredData];
+
+            const priority_ladder = {
+                'Urgent': 1,
+                'Important': 2,
+                'Medium':3,
+                'Low':4
+            }
+
+            const status_ladder = {
+                'Not Started': 1,
+                'In Progress':2,
+                'Complete':3
+            }
+
+
+
+            sortedData.sort((x, y) => {
+                let comparison = 0;
+
+                switch(true){
+                    case (selectedSortOption ==='title' && ascend_or_descend === "ascending"):
+                        //If it is title and ascending order: a,b,c,d......
+                        return x.val1_title.localeCompare(y.val1_title);
+      
+                    
+                    case (selectedSortOption ==='title' && ascend_or_descend === "descending"):
+                        //If it is title and descending order: z,y,x......
+                        return y.val1_title.localeCompare(x.val1_title);
+
+                    case (selectedSortOption === 'status' && ascend_or_descend === "ascending"):
+                        // If it is status and ascending order: a, b, c, d...
+                        return (status_ladder[x.val7_status] || 4) - (status_ladder[y.val7_status] || 4);
+
+                    case (selectedSortOption === 'status' && ascend_or_descend === "descending"):
+                        // If it is status and descending order: z, y, x...
+                        return (status_ladder[y.val7_status] || 4) - (status_ladder[x.val7_status] || 4);
+
+      
+                        
+
+                    case (selectedSortOption ==='backlog-priority' && ascend_or_descend === "ascending"):
+                   
+                        return (priority_ladder[y.val4_priority] || 5) - (priority_ladder[x.val4_priority] || 5);
+                    
+                    
+                    case (selectedSortOption ==='backlog-priority' && ascend_or_descend === "descending"):
+                        
+                        return (priority_ladder[x.val4_priority] || 5) - (priority_ladder[y.val4_priority] || 5);
+
+                    case (selectedSortOption ==='story-points' && ascend_or_descend === "ascending"):
+                        return parseInt(x.val5_points, 10) - parseInt(y.val5_points, 10);
+
+                    case (selectedSortOption ==='story-points' && ascend_or_descend === "descending"):
+                        return parseInt(y.val5_points, 10) - parseInt(x.val5_points, 10);
+                    default:
+                        return 0;
+                }
+            });
+            
+
+
+            // Populate the table with sorted data
+            populateTable(sortedData);
+        }
+
+
+        function resetFilterAndSorts(){
+
+            // Clear the filter inputs
+            document.getElementById('filter-priority').value = "";
+            document.getElementById('filter-story-points').value = "";
+            document.getElementById('filter-status').value = "";
+
+            document.getElementById('sort-options').selectedIndex = "";
+
+            filteredData = getDataArray();
+
+            populateTable(filteredData)
+
+
+        }
+
+        function getDataArray(){
+            const dataArray = [];
+            const dbRef = ref(database, 'product-backlog/');
+            //problem with this on value stuff
+            onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+            
+                if (data) {
+                    for (const key in data) {
+                        dataArray.push(data[key]);
+                    }
+                
+                }
+            }, (error) => {
+                console.error('Error fetching data:', error);
+            });
+            return dataArray;
+        }
+
+        // Function to reset the input fields
+        function resetTaskFields() {
+            document.getElementById("task-title").value = '';
+            document.getElementById("description").value = '';
+            $('#tag').val(null).trigger('change');
+            document.getElementById("backlog-priority").value = 'Low';
+            document.getElementById("story-points").value = '0';
+            document.getElementById("current-stage").value = 'planning';
+            document.getElementById("status").value = 'Not Started';
+            document.getElementById("assignee").value = 'No-Assignee';
+        }
+
+
+
+        /*
+        --------------------------------------------------------------------------
+        Team Member Selection
+        --------------------------------------------------------------------------
+        */
+
+        function showAssigneesNewTask() {
+
+
+            const assigneeSelect = document.getElementById('assignee');
+            
+            const userAccountRef = ref(database, 'user-accounts');
+
+            assigneeSelect.innerHTML = '';
+
+            const intitial_option = document.createElement('option');
+            intitial_option.value = 'No-Assignee';
+            intitial_option.textContent = 'No Assignee';
+            assigneeSelect.appendChild(intitial_option);
+
+
+            get(userAccountRef).then(snapshot => {
+                if (snapshot.exists()) {
+                    const userIDData = snapshot.val();
+                    console.log(userIDData);
+
+                    for (let userID in userIDData) {
+                        const currUser = userIDData[userID];
+                        console.log(currUser)
+                        if (currUser.inSprint !== true){
+                            const option = document.createElement('option');
+                            option.value = currUser.email;
+                            option.textContent = currUser.email;
+
+                            assigneeSelect.appendChild(option);
+                        }
+
+
+                    }
+                }
+            });
+        }
+
+        function showAssigneesEdit(member) {
+            const assigneeSelect = document.getElementById('edit-assignee');
+            
+            
+            assigneeSelect.innerHTML = '';
+
+            const intitial_option = document.createElement('option');
+            intitial_option.value = 'No-Assignee';
+            intitial_option.textContent = 'No Assignee';
+
+            assigneeSelect.appendChild(intitial_option);
+
+            const userAccountRef = ref(database, 'user-accounts');
+
+            get(userAccountRef).then(snapshot => {
+                if (snapshot.exists()) {
+                    const userIDData = snapshot.val();
+                    console.log(userIDData);
+
+                    for (let userID in userIDData) {
+                        const currUser = userIDData[userID];
+                        
+                        if(currUser.inSprint !== true){
+                            const option = document.createElement('option');
+                            option.value = currUser.email;
+                            option.textContent = currUser.email;
+
+                            assigneeSelect.appendChild(option);
+                        }
+                    }
+
+                    assigneeSelect.value = member;
+                }
+            });
+        }
+
+
+
+
+
+
+        //Wehen the filter button is clicked on: a pop up shows up, where the client can select filter properties
+        document.getElementById('filterBtn').addEventListener('click', togglePopup);
+
+        //When the Filter Apply button is clicked on
+        //-Close the popup and apply the filter properties to the table
+        document.getElementById('applyBtn').addEventListener('click', (e) => {
+            e.preventDefault()
+            closeFilterForm()
+
+            const d = getDataArray();
+        
+            const filteredData = applyFilter(d);
+
+        });
+
+
+        //close button of filter: When the client clicks on the close button
+        document.querySelector('.close-btn').addEventListener('click', togglePopup);
+
+        //close button of add task: When the client clicks on the close button
+        document.getElementById('close-add-task-btn').addEventListener('click', toggleAddTaskPopup);
+
+        //When the client clicks on the submit button/add new task button
+        document.getElementById('submit-new-task').addEventListener('click', (e)=>{
+            e.preventDefault()
+            save();
+            
+            //toggleAddTaskPopup();
+        });
+
+        //When the client clicks on the sort button
+        document.getElementById('sort-options').addEventListener('change', sortingTasks);
+        document.getElementById('asc-desc').addEventListener('change', sortingTasks);
+
+        //When the client clicks on the reset button
+        document.getElementById('resetBtn').addEventListener('click', resetFilterAndSorts);
+
+        //Add new Task Popup 
+
+        document.getElementById('addTaskBtn').addEventListener('click', (e) => {
+            openAddPBTask();
+        })
+
+        //Filter popup
+
+        document.getElementById('filterBtn').addEventListener('click', (e) => {
+            openFilter();
+        })
+
+        //close view more pop modal
+        document.getElementById('close-view-more').addEventListener('click', closeViewMore);
+
+        //close edit task modal
+        document.getElementById('close-edit-task-form').addEventListener('click', closeEditTaskForm);
+
+        //close add PB task modal
+        document.getElementById('close-add-PB-task-form').addEventListener('click', closePBTaskForm);
+
+        //close filter modal
+        document.getElementById('close-filter-form').addEventListener('click', closeFilterForm);
+
+
+
+
+        //We want to fetch the data before the basic structures are loaded
+        document.addEventListener('DOMContentLoaded', function(e) {
+            fetchAndDisplayData();
+            showAssigneesNewTask();
+
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function(e) {
+            checkUserRole();
+        });
+    </script>
+
+    <script>
+        //Thsi script is using select2. This enables us to select multiple options in the drop down view
+        $(document).ready(function() {
+            $('#tag').select2();
+            $('#edit-tag').select2();
+        });
+
+    </script>
+    <script src="js/list_cardView.js"></script>
+    <script src="js/deleteMessage.js"></script>
+
+   
+</body>
+</html>

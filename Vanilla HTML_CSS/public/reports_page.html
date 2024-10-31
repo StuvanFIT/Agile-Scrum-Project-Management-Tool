@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports - Tunnel Vision</title>
+  <link rel = "stylesheet" href="css/styles.css">
+  <link rel ="stylesheet" href="css/profilePicturestyling.css">
+  <link rel="stylesheet" href="css/contrast.css">
+  <style>
+    
+    .sprint-dots {
+      display: flex;
+      margin-top: 15px;
+      width: auto;
+      gap: 10px; /* Adjust gap if needed */
+    }
+
+
+    .indicator-selected {
+      background-color: #2c2c54;
+    }
+
+    .indicator-unselected {
+      background-color: rgba(44, 44, 84, 0.75);
+    }
+
+    .indicator-selected, .indicator-unselected {
+        width: 25px;   /* Smaller size */
+        height: 25px;  /* Smaller size */
+        border-radius: 50%;
+        border: 1px solid #f5e6e8; /* Reduce border size */
+        margin: 2px;  /* Optional: adjust margin if needed */
+        padding: 0;   /* Ensure no padding is added */
+    }
+
+    body {
+          background-color: rgba(44, 44, 84, 0.75); /* Changes the entire background to blue */
+          margin: 0;
+          padding: 0;
+        }
+
+
+    .report-choices {
+      margin-left: auto;
+      margin-right: auto;
+      width: 8em;
+      display: flex;
+      width: 546px;
+      max-width: 100%;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font: 800 16px Inter, sans-serif;
+    }
+    .report-button {
+      border-radius: 158px;
+      background-color: #f5e6e8;
+      padding: 28px 31px;
+      cursor: pointer;
+      border: 2px solid;
+    }
+    .report-button-unselected {
+      background-color: #f5e6e8be;
+    }
+
+    .data-container {
+      background-color: #f5e6e8;
+      display: flex;
+      width: 2000px;
+      flex-direction: column;
+      margin: 34px 0 -26px;
+      padding-bottom: 2%;
+    }
+
+    .data-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sprint-label {
+      color: #2c2c54;
+      text-align: center;
+      font: 800 48px Inter, sans-serif;
+    }
+
+    #myChart {
+      width: 100%;
+      height: auto; 
+      max-width: 100%;
+      padding: 0 50px;
+    }
+
+    @media (max-width: 991px) {
+      .tunnel-vision-container { padding-bottom: 100px; }
+      .tunnel-vision-title { font-size: 40px; }
+      .page-title { font-size: 40px; }
+      .sprint-label { font-size: 40px; }
+      .report-button { padding: 27px 55px; }
+    }
+
+    .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+#menu-links {
+    flex-grow: 1;
+}
+
+.bottom-link {
+    display: flex;
+    align-items: center; /* Vertically centers the image and text */
+    justify-content: flex-start; 
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bottom-link img {
+    width: 150px; /* Adjust width as necessary */
+    height: 150px; /* Adjust height as necessary */
+    border-radius: 50%; /* Makes the image round */
+    margin-left: -25px;
+}
+
+.bottom-link span {
+    color: #2c2c54; /* Change text color if needed */
+    font-size: 24px; /* Adjust font size as necessary */
+    margin-left: -15px;
+}
+
+.button {
+  border-radius: 64px;
+  padding: 31px 69px;
+  cursor: pointer;
+  font: 300 20px Inter, sans-serif;
+  border: 2px solid #f5e6e8;
+  color: #fff
+}
+</style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+    import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+        authDomain: "tunnelvision-f07f7.firebaseapp.com",
+        databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+        projectId: "tunnelvision-f07f7",
+        storageBucket: "tunnelvision-f07f7.appspot.com",
+        messagingSenderId: "779720304073",
+        appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+    };
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    function saveSprintData() {
+        const Id = push(ref(database, 'sprintData')).key;
+        set(ref(database, 'sprintData/sprint1/' + Id), { day0: 64, day1: 32, day2: 16, day3: 8, day4: 4, day5: 2, day6: 1, day7: 0 });
+        set(ref(database, 'sprintData/sprint2/' + Id), { day0: 75,day1: 50, day2: 25, day3: 12, day4: 6, day5: 3, day6: 2, day7: 1 });
+        set(ref(database, 'sprintData/sprint3/' + Id), { day0: 100, day1: 69, day2: 34, day3: 12, day4: 6, day5: 3, day6: 2, day7: 1 });
+    }
+    function deleteSprintData() {
+        const dbRef = ref(database, 'sprintData/');
+        remove(dbRef);
+    }
+    function getSprintDataAsArray(sprintNumber) {
+        return new Promise((resolve) => {
+            const sprintRef = ref(database, 'sprintData/sprint' + sprintNumber);
+            onValue(sprintRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const sprintArray = Object.entries(data).flatMap(([key, value]) => {
+                        return Object.entries(value).map(([dayKey, dayValue]) => ({
+                            x: dayKey.replace('day', ''), 
+                            y: dayValue
+                        }));
+                    });
+                    resolve(sprintArray);
+                } else {
+                    console.log("No data available for sprint " + sprintNumber);
+                    resolve([]);
+                }
+            });
+        });
+    }
+    function createSprintDots(numSprints) {
+      const sprintDotsContainer = document.querySelector('.sprint-dots');
+        sprintDotsContainer.innerHTML = ''; 
+        for (let i = 0; i < numSprints; i++) {
+            const dot = document.createElement('button');
+            dot.classList.add('indicator');
+            
+            if (i === 0) {
+                dot.classList.add('indicator-selected'); 
+            } else {
+                dot.classList.add('indicator-unselected');
+            }
+            dot.addEventListener('click', () => {
+            document.querySelectorAll('.indicator').forEach((button, index) => {
+                if (index === i) {
+                    button.classList.remove('indicator-unselected'); 
+                    button.classList.add('indicator-selected');
+                    createGraph(index + 1);
+                } else {
+                    button.classList.remove('indicator-selected'); 
+                    button.classList.add('indicator-unselected'); 
+                }
+            });
+            var Title = document.getElementById('sprintTitle');
+            Title.innerText = "Sprint " + (i + 1); 
+        });
+            sprintDotsContainer.appendChild(dot);
+        }
+    }
+
+    function addAdminLink() {
+      const menuLinks = document.getElementById('menu-links');
+  
+      // Add a <br> for spacing
+      const lineBreak = document.createElement('br');
+      menuLinks.appendChild(lineBreak);
+  
+      // Create the "Create Account" link
+      const adminLink = document.createElement('header');
+      adminLink.classList.add('hamburger-page-button');
+      adminLink.innerHTML = '<a href="account_creation.html">Create Account</a>';
+  
+      // Append the "Create Account" link after the "Team" link
+      const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4]; 
+      teamLink.insertAdjacentElement('afterend', lineBreak);
+      lineBreak.insertAdjacentElement('afterend', adminLink);
+  }
+  
+  
+    let myChart;
+
+    
+    function createGraph(sprintNum) {
+      getSprintDataAsArray(sprintNum).then(sprintData => {
+          sprintData.sort((a, b) => a.x - b.x);
+          if (sprintData.length > 0) {
+              const firstPoint = sprintData[0];
+              const lastPoint = sprintData[sprintData.length - 1]; 
+              const linearLine = [
+                  { x: 0, y: firstPoint.y }, 
+                  { x: lastPoint.x, y: 0 } 
+              ];
+
+     
+              if (myChart) {
+                  myChart.data.datasets[0].data = sprintData; 
+                  myChart.data.datasets[1] = { 
+                      label: 'Estimated Velocity',
+                      data: linearLine,
+                      borderColor: 'rgb(255,0,0)', 
+                      fill: false,
+                      borderDash: [5, 5], 
+                      pointRadius: 0 
+                  };
+                  myChart.update(); 
+              } else {
+               
+                  myChart = new Chart("myChart", {
+                      type: "line",
+                      data: {
+                          datasets: [
+                              {
+                                  label: 'Actual Velocity',
+                                  pointRadius: 4,
+                                  pointBackgroundColor: "rgb(0,0,255)",
+                                  borderColor: "rgb(0,0,255)", 
+                                  fill: false, 
+                                  data: sprintData
+                              },
+                              {
+                                  label: 'Estimated Velocity',
+                                  data: linearLine,
+                                  borderColor: 'rgb(255,0,0)', 
+                                  fill: false,
+                                  borderDash: [5, 5], 
+                                  pointRadius: 0 
+                              }
+                          ]
+                      },
+                      options: {
+                          scales: {
+                              x: {
+                                  type: 'linear',
+                                  title: {
+                                      display: true,
+                                      text: 'Day'
+                                  },
+                                  min: 0,
+                                  max: 8
+                              },
+                              y: {
+                                  title: {
+                                      display: true,
+                                      text: 'Tasks'
+                                  },
+                                  min: 0
+                              }
+                          }
+                      }
+                  });
+              }
+          }
+      });
+    }
+    function getSprintCount() {
+      return new Promise((resolve) => {
+        const sprintDataRef = ref(database, 'sprintData');
+        onValue(sprintDataRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const sprintCount = Object.keys(data).length;
+            console.log(`Number of sprints: ${sprintCount}`);
+            resolve(sprintCount); 
+          } else {
+            console.log("No sprints found.");
+            resolve(0); 
+          }
+        });
+      });
+    }
+    deleteSprintData();
+    saveSprintData();
+    createGraph(1);
+    getSprintCount().then((numSprints) => {
+      createSprintDots(numSprints);
+    });
+  </script>
+  <script>
+     function changeToBurndown() {
+      var buttonB = document.getElementById('burndownButton');
+      var buttonT = document.getElementById('timeLogButton');
+      buttonB.style.backgroundColor = "#f5e6e8";   
+      buttonT.style.backgroundColor = "#f5e6e8be"; 
+      console.log("Changed to Burndown View");                
+    }
+    function changeToTimeLog(){
+      var buttonB = document.getElementById('burndownButton');
+      var buttonT = document.getElementById('timeLogButton');
+      buttonT.style.backgroundColor = "#f5e6e8";   
+      buttonB.style.backgroundColor = "#f5e6e8be"; 
+      console.log("Changed to Time Log View");
+      window.location.href = "timeLog.html";               
+    }
+  </script>
+
+<section class="tunnel-vision-container">
+  <nav class="menu" aria-label="Navigation">
+  <label class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+  </label>
+  <aside class="sidebar">
+      <nav id="menu-links">
+          <br><br>
+          <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+          <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+          <header class="hamburger-page-button"><a href="product_backlog_page.html">Product Backlog</a></header><br>
+          <header class="hamburger-page-button"><a href="reports_page.html" style="text-decoration: underline; font-weight: bold;">Reports</a></header><br>
+          <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+          <!-- New Sign Out button at the bottom -->
+          <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+      </nav>
+      <!-- Add the bottom link here -->
+      <footer class="hamburger-page-button bottom-link">
+          <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+          <span id="profile-name"class="profile-name"></span>
+      </footer>              
+  </aside>
+</nav>
+
+
+  <div class="blur-container">
+  <header class="header-container">
+    <img src="Images/Logo_rose.png" class="logo-image">
+    <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+    <button id="toggle-contrast" class="button high-contrast-btn" style="width: 100px; padding: 5px 10px; font-size: 14px; cursor: pointer; background-color: orangered;">High Contrast Mode</button>
+  </header>
+
+    <h2 class="page-title">Reports</h2>
+
+    <div class="report-choices">
+      <button class="report-button" id="burndownButton" onclick="changeToBurndown()">Burndown</button>
+      <button class="report-button report-button-unselected" id="timeLogButton" onclick="changeToTimeLog()">Time Logs</button>
+    </div>
+
+    <div class="data-container">
+      <div class="data-content">
+        <h3 class="sprint-label" id="sprintTitle">Sprint 1</h3>
+        <canvas id="myChart"></canvas>
+        <div class="sprint-dots">
+          <!-- Sprint dots will be dynamically generated here -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    document.getElementById('toggle-contrast').addEventListener('click', function() {
+    document.body.classList.toggle('high-contrast');
+  
+    var addButton = document.getElementById('add-team-member');
+      
+      // Check if high contrast is on, and change the image accordingly
+      if (document.body.classList.contains('high-contrast')) {
+          addButton.src = 'Images/add_button_high_contrast.png'; // High contrast image
+      } else {
+          addButton.src = 'Images/add_button.png'; // Default image
+      }
+  
+      // Get the logo image element
+      var logoImage = document.querySelector('.logo-image');
+  
+      // Check if high contrast is on, and change the logo accordingly
+      if (document.body.classList.contains('high-contrast')) {
+          logoImage.src = 'Images/Logo_high_contrast.png'; // High contrast logo
+      } else {
+          logoImage.src = 'Images/Logo_rose.png'; // Default logo
+      }
+    });
+  
+  </script>
+  <script type="module" src="js/user-profile.js"></script>
+  <script>
+    // Get the checkbox and blur-container elements
+    const menuToggle = document.getElementById('menu-toggle');
+    const blurContainer = document.querySelector('.blur-container');
+  
+    // Event listener for the checkbox
+    menuToggle.addEventListener('change', function() {
+      // Toggle the blurred class on the blur-container
+      if (menuToggle.checked) {
+        blurContainer.classList.add('blurred');
+      } else {
+        blurContainer.classList.remove('blurred');
+      }
+    });
+  </script>
+</body>
+</html>
+
+

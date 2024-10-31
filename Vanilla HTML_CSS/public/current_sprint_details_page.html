@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunnel Vision</title>
+<link rel = "stylesheet" href="css/currentSprintKanban.css">
+<link rel = "stylesheet" href="css/timelog.css">
+<link rel="stylesheet" href="css/contrast.css">
+<style>
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+#menu-links {
+  flex-grow: 1;
+}
+
+.bottom-link {
+  display: flex;
+  align-items: center; /* Vertically centers the image and text */
+  justify-content: flex-start; 
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.bottom-link img {
+  width: 150px; /* Adjust width as necessary */
+  height: 150px; /* Adjust height as necessary */
+  border-radius: 50%; /* Makes the image round */
+  margin-left: -25px;
+}
+
+.bottom-link span {
+  color: #2c2c54; /* Change text color if needed */
+  font-size: 24px; /* Adjust font size as necessary */
+  margin-left: -15px;
+}
+
+.button {
+  border-radius: 64px;
+  padding: 31px 69px;
+  cursor: pointer;
+  font: 300 20px Inter, sans-serif;
+  border: 2px solid #f5e6e8;
+  color: #fff
+}
+
+</style>
+<body>
+
+
+
+<section class="tunnel-vision-container">
+  <nav class="menu" aria-label="Navigation">
+  <label class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+  </label>
+  <aside class="sidebar">
+      <nav id="menu-links">
+          <br><br>
+          <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+          <header class="hamburger-page-button"><a href="sprint_page.html" style="text-decoration: underline; font-weight: bold;">All Sprints</a></header><br>
+          <header class="hamburger-page-button"><a href="product_backlog_page.html" >Product Backlog</a></header><br>
+          <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+          <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+          <!-- New Sign Out button at the bottom -->
+          <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+      </nav>
+      <!-- Add the bottom link here -->
+      <footer class="hamburger-page-button bottom-link">
+          <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+          <span id="profile-name"class="profile-name"></span>
+      </footer>              
+  </aside>
+</nav>
+
+  <div class="blur-kanban-container">
+
+    <header class="header-container">
+      <img src="Images/Logo_rose.png" class="logo-image">
+      <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+      <button id="toggle-contrast" class="button high-contrast-btn" style="width: 100px; padding: 5px 10px; font-size: 14px; cursor: pointer; background-color: orangered;">High Contrast Mode</button>
+    </header>
+
+
+    <h2 id="page-title"class="page-title">Current Sprint</h2>
+
+    <section class="kanban-container">
+
+      
+      
+      
+
+      <!--NOT STARTED TASKS -->
+      <section class="task-list1">
+        <header class="task-ns-status">Not Started</header>
+
+        <div id="task-ns-container" class="task-ns-container">
+
+        </div>
+      </section>
+
+        
+
+      <!--IN PROGRESS TASKS-->
+      <section class="task-list2">
+        <header class="task-ip-status">In Progress</header>
+        <div id="task-ip-container" class="task-ip-container">
+
+        </div>
+      </section>
+
+
+
+
+      <!--COMPLETED TASKS-->
+      <section class="task-list3">
+        <header class="task-c-status">Completed</header>
+        <div id="task-c-container" class="task-c-container">
+
+        </div>
+      </section>
+
+      
+
+      
+    </section><br>
+
+    <div class="complete-container" style="display: flex; justify-content: center;">
+      <button id="complete-sprint-btn">Complete Sprint</button>
+    </div>
+    
+
+
+
+    <div id="view-more-screen" class="view-more-modal">
+      <div class="view-more-modal-content" style="width: 50%;">
+          <span class="close" id="close-view-more">&times;</span>
+
+          <h2 style="color: black">Task Details</h2>
+          <div id="task-details">
+              <!-- Task details will be populated here -->
+          </div>
+      </div>
+    </div>
+
+    <form>
+      <div id="add-time-log" class="add-time-log-modal">
+          <div class="add-time-log-content">
+              <span class="close" id="close-timelog-form">&times;</span>
+
+              <h2>Time Log</h2>
+              <div id="time-log-details">
+
+                  <label for="team-member">Name</label>
+                  <input type="text" id="team-member" name="team-member" required readonly>
+
+                  <label for="date-contributed">Date</label>
+                  <input type="date" id="date-contributed" name="date-contributed" required>
+
+                  <label for="time-log-desc">Description</label>
+                  <input type="text" id="time-log-desc" name="time-log-desc" required>
+
+                  <label for="hours-spent">Hours Spent</label>
+                  <input type="text" id="hours-spent" name="hours-spent" required>
+
+                  <button type="submit" id="add-time">Submit</button>
+
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- The Modal -->
+  <div id="edit-sprint-modal" class="edit-modal" style="display: none;">
+
+    <!-- Modal content -->
+    <div class="edit-modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Edit Sprint</h2>
+            <span id ="close-edit-sprint-modal" class="close-edit-sprint-modal" style="cursor: pointer; font-size: 32px; color: black; margin-top: -50px;">&times;</span>
+
+        </div>
+        
+        <button type="button" id="edit-sprint-btn" style="float: right; margin-top: -20px; margin-left: -150px; padding: 10px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Update</button>
+        
+        <form>
+            <label for="sprint-title">Title</label>
+            <input type="text" id="sprint-title" name="sprint-title" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" required>
+
+            <label for="sprint-desc">Goal</label>
+            <input type="text" id="sprint-desc" name="sprint-desc" style="width: 100%; 
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black; 
+            border-radius: 5px; 
+            background-color:white;
+            box-sizing: border-box;" required>
+
+        </form>
+        <button type="submit" id="update-edit-sprint">Update</button>
+    </div>
+  </div>
+
+  
+
+
+
+  
+
+  
+
+
+
+</div>
+</section>
+<script>
+  document.getElementById('toggle-contrast').addEventListener('click', function() {
+  document.body.classList.toggle('high-contrast');
+
+  var addButton = document.getElementById('add-team-member');
+    
+    // Check if high contrast is on, and change the image accordingly
+    if (document.body.classList.contains('high-contrast')) {
+        addButton.src = 'Images/add_button_high_contrast.png'; // High contrast image
+    } else {
+        addButton.src = 'Images/add_button.png'; // Default image
+    }
+
+    // Get the logo image element
+    var logoImage = document.querySelector('.logo-image');
+
+    // Check if high contrast is on, and change the logo accordingly
+    if (document.body.classList.contains('high-contrast')) {
+        logoImage.src = 'Images/Logo_high_contrast.png'; // High contrast logo
+    } else {
+        logoImage.src = 'Images/Logo_rose.png'; // Default logo
+    }
+  });
+
+</script>
+<script type="module" src="js/user-profile.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
+
+<script type="module" src="js/currentSprintKanban.js"></script>
+
+<script>
+    // Get the checkbox and blur-container elements
+    const menuToggle = document.getElementById('menu-toggle');
+    const blurContainer = document.querySelector('.blur-container');
+
+    // Event listener for the checkbox
+    menuToggle.addEventListener('change', function() {
+        // Toggle the blurred class on the blur-container
+        if (menuToggle.checked) {
+        blurContainer.classList.add('blurred');
+        } else {
+        blurContainer.classList.remove('blurred');
+        }
+    });
+</script>
+
+<script type="module">
+
+    import {populateColumns} from "./js/currentSprintKanban.js";
+
+    const sprintDetails = JSON.parse(sessionStorage.getItem('selectedSprint'));
+    console.log(sprintDetails)
+    if (sprintDetails) {
+        loadSprintKanban(sprintDetails); // Pass the sprint details to the function handler
+    } else {
+        console.log("No sprint details found.");
+    }
+
+
+    function loadSprintKanban(sprintDetails) {
+        // This is where you implement the logic to render the Kanban view
+        // using the sprintDetails retrieved from the database
+
+        console.log("Sprint details:", sprintDetails);
+        // Populate tasks into the correct columns based on their status
+        populateColumns(sprintDetails);
+    }
+
+    function addAdminLink() {
+        const menuLinks = document.getElementById('menu-links');
+        if (!menuLinks) {
+            console.error('Menu links not found, ensure this page has the correct structure');
+            return;
+        }
+
+        // Add a <br> for spacing
+        const lineBreak = document.createElement('br');
+        menuLinks.appendChild(lineBreak);
+
+        // Create the "Create Account" link
+        const adminLink = document.createElement('header');
+        adminLink.classList.add('hamburger-page-button');
+        adminLink.innerHTML = '<a href="account_creation.html">Create Account</a>';
+
+        // Append the "Create Account" link after the "Team" link
+        const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4];
+        if (teamLink) {
+            teamLink.insertAdjacentElement('afterend', lineBreak);
+            lineBreak.insertAdjacentElement('afterend', adminLink);
+        } else {
+            console.warn('Team link not found, appending at the end');
+            menuLinks.appendChild(adminLink);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        addAdminLink();
+    });
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+.high-contrast .button {
+background-color: #000000 !important;
+color: #FFFF00 !important; /* Yellow buttons for contrast */
+border-color: #FFFF00 !important; /* Yellow border */
+}
+
+.high-contrast .team-member {
+background-color: black !important;
+color: yellow !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast .list-container {
+background-color: yellow !important;
+color: black !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast .blur-container {
+background-color: black !important;
+color: black !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast .header-container {
+background-color: black !important;
+color: black !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast .page-title {
+background-color: black !important;
+color: yellow !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast .tunnel-vision-title,
+.high-contrast .tunnel-vision-container {
+background-color: black !important;
+color: yellow !important;
+border-color: #FFFFFF !important;
+}
+
+.high-contrast html,
+.high-contrast body {
+    background-color: black !important;
+    color: yellow !important;
+    border-color: #FFFFFF !important;
+}
+
+.high-contrast {
+    background-color: black !important;
+    color: white !important;
+  }
+
+
+
+
+.high-contrast .list-card-button,
+.high-contrast #sort-options,
+.high-contrast #asc-desc,
+.high-contrast th,
+.high-contrast .sprint-title,
+.high-contrast .future-sprints-section,
+.high-contrast .in-progress-sprints-section,
+.high-contrast .completed-sprints-section {
+    background-color: yellow !important;
+    color: black !important;
+}
+
+.high-contrast td,
+.high-contrast #complete-sprint-btn {
+    background-color: pink !important;
+    color: black !important;
+}
+
+.high-contrast .sprint-card,
+.high-contrast .task-item-index,
+.high-contrast .task-title,
+.high-contrast .input-box,
+.high-contrast .login-button {
+    background-color: black !important;
+    color: yellow !important;
+}
+
+.high-contrast .sprint-line-thing,
+.high-contrast #sprintDateHeading {
+    background-color: black !important;
+    color: yellow !important;
+}
+
+.high-contrast .task-ip-status,
+.high-contrast .task-ns-status,
+.high-contrast .task-c-status,
+.high-contrast .task-list1,
+.high-contrast .task-list2,
+.high-contrast .task-list3,
+.high-contrast .account-creation-container,
+.high-contrast .report-button,
+.high-contrast .data-content,
+.high-contrast .data-container {
+    background-color: yellow !important;
+    color: black !important;
+}

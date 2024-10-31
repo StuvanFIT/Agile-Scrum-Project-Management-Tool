@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports - Tunnel Vision</title>
+  <link rel = "stylesheet" href="css/styles.css">
+  <style>
+
+    body {
+          background-color: rgba(44, 44, 84, 0.75); /* Changes the entire background to blue */
+          margin: 0;
+          padding: 0;
+        }
+
+    
+
+    .report-choices {
+      margin-left: auto;
+      margin-right: auto;
+      width: 8em;
+      display: flex;
+      width: 546px;
+      max-width: 100%;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font: 800 16px Inter, sans-serif;
+    }
+    .report-button {
+      border-radius: 158px;
+      background-color: #f5e6e8;
+      padding: 28px 31px;
+      cursor: pointer;
+      border: 2px solid;
+    }
+    .report-button-unselected {
+      background-color: #f5e6e8be;
+    }
+
+      .data-container {
+      background-color: #f5e6e8;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center everything horizontally */
+      width: 2000px;
+      margin: 34px 0 -26px;
+      padding-bottom: 2%;
+    }
+
+    .data-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Updated .dropDown positioning */
+    .dropDown {
+      display: flex;
+      justify-content: center; /* Ensures dropdown stays in the middle */
+      gap: 20px; /* Adds space between the dropdowns */
+      margin-top: -150px; /* Moves it closer to the sprint-label */
+      margin-bottom: 20px; /* Adds space below the dropdowns */
+      width: 100%; /* Makes it span the width of the container */
+    }
+    .select {
+      padding: 8px;
+      font-size: 16px;
+  }
+
+  .sprint-label {
+      color: #2c2c54;
+      text-align: center;
+      font: 800 48px Inter, sans-serif;
+    }
+    @media (max-width: 991px) {
+      .tunnel-vision-container { padding-bottom: 100px; }
+      .tunnel-vision-title { font-size: 40px; }
+      .page-title { font-size: 40px; }
+      .sprint-label { font-size: 40px; }
+      .report-button { padding: 27px 55px; }
+    }
+
+
+    select {
+      padding: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+            authDomain: "tunnelvision-f07f7.firebaseapp.com",
+            databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+            projectId: "tunnelvision-f07f7",
+            storageBucket: "tunnelvision-f07f7.appspot.com",
+            messagingSenderId: "779720304073",
+            appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+        }
+        const app = initializeApp(firebaseConfig)
+        const database = getDatabase(app)
+    
+        async function getUserEmails() {
+            try {
+                const dbRef = ref(database, 'user-accounts')
+                const snapshot = await get(dbRef)
+                const emails = []
+                snapshot.forEach(childSnapshot => {
+                    const data = childSnapshot.val()
+                    if (data.email) emails.push(data.email)
+                })
+                return emails
+            } catch (error) {
+                console.error('Error fetching user emails:', error)
+                return []
+            }
+        }
+    
+        function removeAfterAt(emails) {
+            return emails.map(email => email.split('@')[0])
+        }
+    
+      function initilazeEmailDropDown(){
+          getUserEmails().then(emails => {
+              const processedEmails = removeAfterAt(emails)
+              const emailSet = new Set(processedEmails)
+              const emailArray = Array.from(emailSet);
+              //console.log(emailArray);
+      
+              // Populate the dropdown
+              const emailDropdown = document.getElementById('emailDropdown');
+              emailArray.forEach(email => {
+                  const option = document.createElement('option');
+                  option.value = email;
+                  option.textContent = email;
+                  emailDropdown.appendChild(option);
+              });
+          });
+      }
+      async function getFolderCount() {
+        try {
+            const dbRef = ref(database, 'sprint-log');
+            const snapshot = await get(dbRef);
+
+            if (snapshot.exists()) {
+                const folderCount = snapshot.size; 
+                //console.log(`Number of folders in 'sprint-log': ${folderCount}`);
+                return folderCount;
+            } else {
+                //console.log("'sprint-log' does not exist.");
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error fetching folder count:', error);
+            return 0;
+        }
+    }
+
+    async function getSprintLogs() {
+        try {
+            const dbRef = ref(database, 'sprint-log');
+            const snapshot = await get(dbRef);
+
+            if (snapshot.exists()) {
+
+                return snapshot.val();  // Return the sprint log data
+            } else {
+                //console.log("'sprint-log' folder does not exist or is empty.");
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching sprint logs:', error);
+            return null;
+        }
+    }
+
+    async function getSprintTitles() {
+        try {
+            const sprintLogs = await getSprintLogs();  // Call your existing function
+
+            if (sprintLogs) {
+                const sprintTitles = [];
+
+                // Loop through the sprint logs and collect all 'v1_sprintTitle' values
+                for (const sprintId in sprintLogs) {
+                    if (sprintLogs[sprintId].v1_sprintTitle) {
+                        sprintTitles.push(sprintLogs[sprintId].v1_sprintTitle);
+                    }
+                }
+
+                //console.log('Sprint Titles:', sprintTitles);
+                return sprintTitles;  // Return all v1_sprintTitle values
+            } else {
+                //console.log('No sprint logs available.');
+                return [];
+            }
+        } catch (error) {
+            console.error('Error fetching sprint titles:', error);
+            return [];
+        }
+    }
+
+    async function initilazeSprintDropDown2() {
+    const sprintArray = await getSprintTitles();
+    const dropDown = document.getElementById('sprintSelect');
+    for (let i = 0; i < sprintArray.length; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = sprintArray[i];
+        
+        // Move the event listener outside of the loop to avoid multiple listeners
+        dropDown.addEventListener('change', async (event) => {
+            const selectedSprintNum = event.target.value;
+            event.stopPropagation();
+            const promiseArray = await getTask(selectedSprintNum);
+          // Convert promises to normal array
+          Promise.all(promiseArray)
+            .then(resolvedValues => {
+              // resolvedValues is now a normal array containing the resolved values
+              populateTasksTable(resolvedValues)
+            })
+            .catch(error => {
+              console.error('Error resolving promises:', error);
+            });
+        });
+        
+        dropDown.appendChild(option);
+    }
+}
+
+    async function getProductBacklogItemByKey(key) {
+      try {
+          const dbRef = ref(database, `product-backlog/${key}`); // Adjust the path if needed
+          const snapshot = await get(dbRef);
+
+          if (snapshot.exists()) {
+              const item = snapshot.val(); // Get the object corresponding to the key
+              //console.log('Product Backlog Item:', item);
+              return item; // Return the item or use it as needed
+          } else {
+              //console.log('No such item exists in the productbacklog for the provided key.');
+              return null; // Return null if the item doesn't exist
+          }
+      } catch (error) {
+          console.error('Error fetching product backlog item:', error);
+          return null; // Return null in case of error
+      }
+  }
+
+    async function getTask(numSprint) {
+      try {
+          const sprintLogs = await getSprintLogs();  
+
+          if (sprintLogs) {
+              const keys = Object.keys(sprintLogs);
+              if (numSprint >= 0 && numSprint < keys.length) {
+                  const selectedKey = keys[numSprint];
+                  const allocatedTasksKey = sprintLogs[selectedKey].v5_allocatedTasks;
+                  var allocatedTasks = []
+                  for (let i = 0; i < allocatedTasksKey.length; i++) {
+                    allocatedTasks.push(getProductBacklogItemByKey(allocatedTasksKey[i]))
+                  }
+                  //console.log(allocatedTasks.length)
+                  return(allocatedTasks)
+              } else {
+                  console.error(`Sprint log not found for index: ${numSprint}`);
+              }
+          } else {
+              //console.log('No sprint logs available.');
+          }
+      } catch (error) {
+          console.error('Error fetching sprint titles:', error);
+      }
+  }
+
+  function populateTasksTable(tasksData) {
+    if (!Array.isArray(tasksData)){
+        tasksData = []
+        task.accumulatedEffort = 'N/A'
+        task.assignedToSprint = 'N/A'
+        task.val1_title = 'N/A'
+        task.val2_desc = 'N/A'
+        task.val3_tag = 'N/A'
+        task.val4_priority = 'N/A'
+        task.val5_points = 'N/A'
+        task.val6_stage = 'N/A'
+        task.val7_status = 'N/A'
+        console.log('is not array')
+      }
+      const tasksTableBody = document.getElementById('tasksTableBody');
+      tasksTableBody.innerHTML = ''; // Clear previous data
+      
+
+      tasksData.forEach(task => {
+          const row = document.createElement('tr');
+
+          // Ensure the task has all required properties before accessing them
+          row.innerHTML = `
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.accumulatedEffort}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.assignedToSprint || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val1_title || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val2_desc || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val3_tag ? task.val3_tag.join(', ') : 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val4_priority || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val5_points || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val6_stage || 'N/A'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${task.val7_status || 'N/A'}</td>
+          `;
+
+          // Append the row to the table body
+          tasksTableBody.appendChild(row);
+      });
+  }
+
+    initilazeSprintDropDown2()
+    initilazeEmailDropDown()
+    </script>
+
+    <script>
+
+
+        function changeToBurndown() {
+          var burndownButton = document.getElementById('burndownButton')
+          var timeLogButton = document.getElementById('timeLogButton')
+          burndownButton.style.backgroundColor = "#f5e6e8"
+          timeLogButton.style.backgroundColor = "#f5e6e8be"
+          window.location.href = "reports_page.html"; 
+        }
+        
+        function changeToTimeLogs() {
+          var burndownButton = document.getElementById('burndownButton')
+          var timeLogButton = document.getElementById('timeLogButton')
+          burndownButton.style.backgroundColor = "#f5e6e8be"
+          timeLogButton.style.backgroundColor = "#f5e6e8"
+          window.location.href = "timelog.html"; 
+        } 
+        
+        </script>
+<section class="tunnel-vision-container">
+  <nav class="menu" aria-label="Navigation">
+    <label class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+    </label>
+    <aside class="sidebar">
+      <nav>
+        <br>
+        <br>
+        <header class="hamburger-page-button"><a href="index.html" style="text-decoration: underline; font-weight: bold;">Home</a></header><br>
+        <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+        <header class="hamburger-page-button"><a href="product_backlog_page.html">Product Backlog</a></header><br>
+        <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+        <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+        <header class="hamburger-page-button"><a href="account_creation.html">Create Account</a></header><br>
+        <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+      </nav>
+    </aside>
+  </nav>
+
+  <div class="blur-container">
+  <header class="header-container">
+    <img src="Images/Logo_rose.png" class="logo-image">
+    <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+  </header>
+
+    <h2 class="page-title">Reports</h2>
+
+    <div class="report-choices">
+      <button class="report-button  report-button-unselected" id="burndownButton" onclick="changeToBurndown()">Burndown</button>
+      <button class="report-button" id="timeLogButton" onclick="changeToTimeLog()">Time Logs</button>
+    </div>
+
+    <div class="data-container">
+      <div class="data-content">
+        <h3 class="sprint-label" id="sprintTitle">Time Log</h3>
+        <canvas id="myChart"></canvas>
+        <div class="dropDown">
+          <label for="emailDropdown">Filter by:</label>
+          <select id="sprintSelect"><option value="" disabled selected>Sprint</option></select>
+          <select id="emailDropdown"><option value="" disabled selected>Email</option></select>
+      </div>
+      <table id="tasksTable" style="width:90%; border-collapse: collapse; margin-top: 20px;">
+          <thead>
+              <tr>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Accumulated Effort</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Assigned to Sprint</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Title</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Description</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Tags</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Priority</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Points</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Stage</th>
+                  <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
+              </tr>
+          </thead>
+          <tbody id="tasksTableBody">
+              <!-- Rows will be populated here -->
+          </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Get the checkbox and blur-container elements
+    const menuToggle = document.getElementById('menu-toggle');
+    const blurContainer = document.querySelector('.blur-container');
+  
+    // Event listener for the checkbox
+    menuToggle.addEventListener('change', function() {
+      // Toggle the blurred class on the blur-container
+      if (menuToggle.checked) {
+        blurContainer.classList.add('blurred');
+      } else {
+        blurContainer.classList.remove('blurred');
+      }
+    });
+  </script>
+</body>
+</html>

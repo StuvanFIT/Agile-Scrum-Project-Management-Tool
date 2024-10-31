@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunnel Vision</title>
+<link rel="stylesheet" href="css/previous_completed_sprint_page.css">
+</head>
+<style>
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+#menu-links {
+  flex-grow: 1;
+}
+
+.bottom-link {
+  display: flex;
+  align-items: center; /* Vertically centers the image and text */
+  justify-content: flex-start; 
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.bottom-link img {
+  width: 150px; /* Adjust width as necessary */
+  height: 150px; /* Adjust height as necessary */
+  border-radius: 50%; /* Makes the image round */
+  margin-left: -25px;
+}
+
+.bottom-link span {
+  color: #2c2c54; /* Change text color if needed */
+  font-size: 24px; /* Adjust font size as necessary */
+  margin-left: -15px;
+}
+
+
+</style>
+<body>
+
+
+
+<section class="tunnel-vision-container">
+  <nav class="menu" aria-label="Navigation">
+  <label class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+  </label>
+  <aside class="sidebar">
+      <nav id="menu-links">
+          <br><br>
+          <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+          <header class="hamburger-page-button"><a href="sprint_page.html" style="text-decoration: underline; font-weight: bold;">All Sprints</a></header><br>
+          <header class="hamburger-page-button"><a href="product_backlog_page.html">Product Backlog</a></header><br>
+          <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+          <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+          <!-- New Sign Out button at the bottom -->
+          <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+      </nav>
+      <!-- Add the bottom link here -->
+      <footer class="hamburger-page-button bottom-link">
+          <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+          <span id="profile-name"class="profile-name"></span>
+      </footer>              
+  </aside>
+</nav>
+
+  <div class="blur-kanban-container">
+
+    <header class="header-container">
+      <img src="Images/Logo_rose.png" class="logo-image">
+      <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+    </header>
+
+    <h2 id="page-title" class="page-title">Current Sprint</h2>
+
+    <section class="kanban-container">
+      <!-- NOT STARTED TASKS -->
+      <section class="task-list1">
+        <header class="task-ns-status">Not Started</header>
+        <div id="task-ns-container" class="task-ns-container">
+        </div>
+      </section>
+
+      <!-- IN PROGRESS TASKS -->
+      <section class="task-list2">
+        <header class="task-ip-status">In Progress</header>
+        <div id="task-ip-container" class="task-ip-container">
+        </div>
+      </section>
+
+      <!-- COMPLETED TASKS -->
+      <section class="task-list3">
+        <header class="task-c-status">Completed</header>
+        <div id="task-c-container" class="task-c-container">
+        </div>
+      </section>
+    </section>
+
+    <div id="view-more-screen" class="view-more-modal">
+      <div class="view-more-modal-content" style="width: 50%;">
+          <div class="x-holder" style="display: flex; justify-content: flex-end;">
+            <span class="close" id="close-view-more" style="cursor: pointer; font-size: 25px; font-weight: 800;">&times;</span>
+          </div>
+          <h2 style="color: black">Task Details</h2>
+          <div id="task-details">
+              <!-- Task details will be populated here -->
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="module" src="js/user-profile.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
+<script type="module" src="./js/previousCompletedSprint.js"></script>
+
+<script>
+    // Get the checkbox and blur-container elements
+    const menuToggle = document.getElementById('menu-toggle');
+    const blurContainer = document.querySelector('.blur-kanban-container');
+
+    // Event listener for the checkbox
+    menuToggle.addEventListener('change', function() {
+        // Toggle the blurred class on the blur-container
+        if (menuToggle.checked) {
+            blurContainer.classList.add('blurred');
+        } else {
+            blurContainer.classList.remove('blurred');
+        }
+    });
+</script>
+
+<script type="module">
+    import {populatePrevTasks} from "./js/previousCompletedSprint.js";
+
+    const prevSprint = JSON.parse(sessionStorage.getItem('currPrevSprint'));
+
+    if (prevSprint) {
+        loadCompletedSprint(prevSprint); // Pass the sprint details to the function handler
+    } else {
+        console.log("No sprint details found.");
+    }
+
+    function loadCompletedSprint(prevSprint) {
+        console.log("Sprint details:", prevSprint);
+        // Populate tasks into the correct columns based on their status
+        populatePrevTasks(prevSprint);
+    }
+
+    function addAdminLink() {
+        const menuLinks = document.getElementById('menu-links');
+        if (!menuLinks) {
+            console.error('Menu links not found, ensure this page has the correct structure');
+            return;
+        }
+
+        // Add a <br> for spacing
+        const lineBreak = document.createElement('br');
+        menuLinks.appendChild(lineBreak);
+
+        // Create the "Create Account" link
+        const adminLink = document.createElement('header');
+        adminLink.classList.add('hamburger-page-button');
+        adminLink.innerHTML = '<a href="account_creation.html">Create Account</a>';
+
+        // Append the "Create Account" link after the "Team" link
+        const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4];
+        if (teamLink) {
+            teamLink.insertAdjacentElement('afterend', lineBreak);
+            lineBreak.insertAdjacentElement('afterend', adminLink);
+        } else {
+            console.warn('Team link not found, appending at the end');
+            menuLinks.appendChild(adminLink);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        addAdminLink();
+    });
+</script>
+
+</body>
+</html>

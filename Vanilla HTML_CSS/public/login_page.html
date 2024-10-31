@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script type="module" src="js/firebaseauth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Tunnel Vision</title>
+  <style>
+    .login-background {
+      background-color: #2c2c54;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 71px 80px 110px;
+      font-family: Inter, sans-serif;
+      overflow: hidden;
+    }
+    .login-form {
+      border-radius: 78px;
+      background-color: #F5E6E8;
+      width: 30%;
+      height: 80%;
+      display: flex;
+      margin-top: 69px;
+      flex-direction: column;
+      font-size: 32px;
+      color: #2C2C54;
+      font-weight: 400;
+      padding: 85px 62px;
+      align-self: center;
+    }
+    .welcome {
+      font-size: 64px;
+      font-weight: 500;
+      text-align: center;
+      align-self: center;
+    }
+    .invisible {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .login-button {
+      border-radius: 9px;
+      background-color: #2c2c54;
+      margin-top: 62px;
+      color: #fff;
+      text-align: center;
+      padding: 19px 70px;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+    }
+    .rEmail,
+    .rPassword,
+    .input-box,
+    .login-button {
+      margin-top: 40px;
+      padding: 15px 20px;
+      font-size: 24px;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 724px;
+      max-width: 100%;
+      margin-bottom: -22px;
+    }
+    .logo-characteristics {
+      aspect-ratio: 2.51;
+      object-fit: contain;
+      object-position: center;
+      width: 475px;
+      max-width: 100%;
+      background-blend-mode: screen;
+    }
+    .tunnel-vision {
+      color: #fff;
+      font-size: 64px;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 18px;
+    }
+    @media (max-width: 991px) {
+      .login-background {
+        padding: 0 20px 100px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      .tunnel-vision {
+        font-size: 40px;
+        color: #F5E6E8;
+      }
+      .login-form {
+        margin-top: 40px;
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: #2C2C54;">
+  <section class="login-background">
+    <div class="logo">
+      <img loading="lazy" src="Images/Logo_rose.png" class="logo-characteristics" alt="Tunnel Vision logo" />
+      <h1 class="tunnel-vision">Tunnel Vision</h1>
+    </div>
+    <form class="login-form" id="login-form">
+      <h2 class="welcome">Welcome back!</h2>
+      <label for="email" class="invisible">Enter email</label>
+      <input type="email" class="input-box rEmail" id="rEmail" placeholder="Enter email" required>
+      <label for="password" class="invisible">Enter password</label>
+      <input type="password" class="input-box rPassword" id="rPassword" placeholder="Enter password" required>
+      <button type="submit" class="login-button" id="loginButton">Login</button>
+      <div id="error-message" class="error-message"></div>
+    </form>
+  </section>
+</body>
+</html>

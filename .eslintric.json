@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsdoc/recommended"
+  ],
+  "plugins": [
+    "jsdoc"
+  ],
+  "rules": {
+    "jsdoc/check-alignment": "error",          
+    "jsdoc/check-indentation": "error",       
+    "jsdoc/check-param-names": "error",        
+    "jsdoc/check-tag-names": "error",          
+    "jsdoc/check-types": "error",              
+    "jsdoc/require-description": "error",      
+    "jsdoc/require-param": "error",            
+    "jsdoc/require-param-type": "error",       
+    "jsdoc/require-returns": "error",          
+    "jsdoc/require-returns-type": "error"      
+  }
+}

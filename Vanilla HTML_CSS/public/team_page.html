@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team - Tunnel Vision</title>
+<link rel = "stylesheet" href="css/styles.css">
+<link rel ="stylesheet" href="css/profilePicturestyling.css">
+<link rel="stylesheet" href="css/contrast.css">
+<style>
+
+
+
+.tunnel-vision-container {
+  background-color: #2c2c54;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 129px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header-container {
+  background-color: #2c2c54;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.menu {
+  position: absolute;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 23px;
+}
+
+.menu-button-line {
+  border-radius: 46px;
+  background-color: #2c2c54;
+  width: 98px;
+  height: 14px;
+  border: 2px solid #f5e6e8;
+  cursor: pointer;
+}
+
+.tunnel-vision-title {
+  color: #f5e6e8;
+  font: 600 64px Inter, sans-serif;
+  text-align: center;
+}
+
+.page-title {
+  color: #f5e6e8;
+  text-align: center;
+  margin-top: 46px;
+  font: 800 48px Inter, sans-serif;
+}
+
+.buttons-space {
+  display: flex;
+  margin-top: 63px;
+  gap: 20px;
+  color: #fff;
+  white-space: nowrap;
+  line-height: 1.2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  border-radius: 64px;
+  padding: 31px 69px;
+  cursor: pointer;
+  font: 300 20px Inter, sans-serif;
+  border: 2px solid #f5e6e8;
+  color: #fff
+}
+
+.edit-button {
+  background-color: #2c2c54;
+}
+
+.report-button {
+  background-color: #2c2c54;
+}
+
+.remove-button {
+  background-color: #5a0001;
+}
+
+.team-member-list {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  text-align: center;
+  font: 800 32px Inter, sans-serif;
+  justify-content: space-between;
+  height: 10%;
+  cursor: pointer;
+}
+
+.team-member {
+  background-color: white;
+  padding: 56px 70px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 5px;
+  width: 360px;
+}
+
+.add-team-member {
+  margin-top: auto;
+  background-color: #ead2ac;
+  padding: 56px 70px;
+  border: 1px solid #2c2c54
+}
+
+@media (max-width: 991px) {
+  .header-container {
+    padding: 0 20px;
+  }
+
+  .tunnel-vision-title {
+    font-size: 40px;
+  }
+
+  .page-title {
+    margin-top: 40px;
+    font-size: 40px;
+  }
+
+  .team-content {
+    max-width: 100%;
+    margin: 40px 0 10px; 
+    flex-direction: column;
+  }
+
+  .team-member-card {
+    max-width: 100%;
+    padding: 0 20px;
+    cursor: pointer;
+  }
+
+  .buttons-space {
+    max-width: 100%;
+    margin-top: 40px;
+    white-space: initial;
+  }
+
+  .button {
+    white-space: initial;
+    padding: 0 20px;
+  }
+
+  .team-member-list {
+    width: 100%;
+  }
+
+  .team-member, .team-member-unselected, .add-team-member {
+    padding: 0 20px;
+  }
+}
+
+.logo-image {
+  width: 7%;
+  height: auto;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  background-color: white;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid black;
+  width: 30%;
+  height: 50%;
+  text-align: center;
+  border-radius: 10px; 
+  z-index: 1000;
+
+  /* Flexbox properties for vertical and horizontal centering */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.list-container {
+  background-color: #8D99AE;
+  width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: flex;
+  border-radius: 10px;
+  padding: 20px;
+  height: 100%;
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Makes the image circular */
+  margin-right: 10px;
+}
+
+#modal-profile-pic {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%; /* Optional: makes the image circular */
+  object-fit: cover; /* Ensures the image fits within the box and is not distorted */
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+#menu-links {
+    flex-grow: 1;
+}
+
+.bottom-link {
+    display: flex;
+    align-items: center; /* Vertically centers the image and text */
+    justify-content: flex-start; 
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bottom-link img {
+    width: 150px; /* Adjust width as necessary */
+    height: 150px; /* Adjust height as necessary */
+    border-radius: 50%; /* Makes the image round */
+    margin-left: -25px;
+}
+
+.bottom-link span {
+    color: #2c2c54; /* Change text color if needed */
+    font-size: 24px; /* Adjust font size as necessary */
+    margin-left: -15px;
+}
+
+
+</style>
+<body style="background-color: #2c2c54">
+
+
+
+<section class="tunnel-vision-container">
+    <nav class="menu" aria-label="Navigation">
+    <label class="hamburger-menu">
+        <input type="checkbox" id="menu-toggle">
+    </label>
+    <aside class="sidebar">
+        <nav id="menu-links">
+            <br><br>
+            <header class="hamburger-page-button"><a href="index.html">Home</a></header><br>
+            <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+            <header class="hamburger-page-button"><a href="product_backlog_page.html">Product Backlog</a></header><br>
+            <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+            <header class="hamburger-page-button"><a href="team_page.html" style="text-decoration: underline; font-weight: bold;">Team</a></header><br>
+            <!-- New Sign Out button at the bottom -->
+            <header class="hamburger-page-button"><a href="login_page.html">Sign Out</a></header><br>
+        </nav>
+        <!-- Add the bottom link here -->
+        <footer class="hamburger-page-button bottom-link">
+            <img src="Images/default-profile-pic-2.png" alt="Profile Picture">
+            <span id="profile-name"class="profile-name"></span>
+        </footer>              
+    </aside>
+</nav>
+
+
+    <div class="blur-container">
+      <header class="header-container">
+        <img src="Images/Logo_rose.png" class="logo-image"></img>
+        <h1 class="tunnel-vision-title">Tunnel Vision</h1>
+        <button id="toggle-contrast" class="button high-contrast-btn" style="width: 100px; padding: 5px 10px; font-size: 14px; cursor: pointer; background-color: orangered;">High Contrast Mode</button>
+        
+
+      </header>
+
+      <h2 class="page-title">Team</h2>
+      
+
+      <img src="Images/add_button.png" id="add-team-member" style="width: 100px; height: 100px; cursor: pointer;"></img>
+
+      <div class="list-container">
+        <div id="team-member-list" class="team-member-list"></div>
+      </div>
+      
+
+      <div id="user-detail-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <img id="modal-profile-pic" src="" alt="Profile Picture" class="profile-pic">
+          <h2 id="modal-name"></h2>
+          <p><strong>Email:</strong> <span id="modal-email"></span></p>
+          <p><strong>Admin Status:</strong> <span id="modal-admin-status"></span></p>
+        </div>
+    </div>
+</section>
+<script>
+  document.getElementById('toggle-contrast').addEventListener('click', function() {
+  document.body.classList.toggle('high-contrast');
+
+  var addButton = document.getElementById('add-team-member');
+    
+    // Check if high contrast is on, and change the image accordingly
+    if (document.body.classList.contains('high-contrast')) {
+        addButton.src = 'Images/add_button_high_contrast.png'; // High contrast image
+    } else {
+        addButton.src = 'Images/add_button.png'; // Default image
+    }
+
+    // Get the logo image element
+    var logoImage = document.querySelector('.logo-image');
+
+    // Check if high contrast is on, and change the logo accordingly
+    if (document.body.classList.contains('high-contrast')) {
+        logoImage.src = 'Images/Logo_high_contrast.png'; // High contrast logo
+    } else {
+        logoImage.src = 'Images/Logo_rose.png'; // Default logo
+    }
+  });
+
+</script>
+<script type="module" src="js/user-profile.js"></script>
+<script type="module"> 
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+  import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
+
+  //The firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+    authDomain: "tunnelvision-f07f7.firebaseapp.com",
+    databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+    projectId: "tunnelvision-f07f7",
+    storageBucket: "tunnelvision-f07f7.appspot.com",
+    messagingSenderId: "779720304073",
+    appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const database = getDatabase(app);
+
+  function checkUserRole() {
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
+              const userId = user.uid;
+              const userRef = ref(database, 'user-accounts/' + userId);
+
+              get(userRef).then((snapshot) => {
+                  const data = snapshot.val();
+                  if (data.isAdmin) {
+                      addAdminLink();
+                  }
+              });
+          }
+      })
+  }
+  function addAdminLink() {
+    const menuLinks = document.getElementById('menu-links');
+
+    // Add a <br> for spacing
+    const lineBreak = document.createElement('br');
+    menuLinks.appendChild(lineBreak);
+
+    // Create the "Create Account" link
+    const adminLink = document.createElement('header');
+    adminLink.classList.add('hamburger-page-button');
+    adminLink.innerHTML = '<a href="account_creation.html">Create Account</a>';
+
+    // Append the "Create Account" link after the "Team" link
+    const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4]; 
+    teamLink.insertAdjacentElement('afterend', lineBreak);
+    lineBreak.insertAdjacentElement('afterend', adminLink);
+}
+
+
+  function displayUsers() {
+  const usersRef = ref(database, 'user-accounts/');
+  get(usersRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const usersData = snapshot.val();
+      const teamMemberList = document.getElementById('team-member-list');
+      teamMemberList.innerHTML = ''; // Clear existing list
+
+      // Loop through the users and create elements for each
+      for (const userId in usersData) {
+        const user = usersData[userId];
+
+        // Create a div for each team member
+        const userDiv = document.createElement('div');
+        userDiv.classList.add('team-member');
+
+        // Create an image element for the profile picture
+        const userImage = document.createElement('img');
+        userImage.src = user.pfp; // Set the profile picture URL
+        userImage.alt = `${user.name}'s profile picture`; // Set alt text for the image
+        userImage.classList.add('profile-pic'); // Optionally, add a class for styling
+
+        // Create a span or div for the user's name
+        const userName = document.createElement('div');
+        userName.textContent = user.name; // Display user's name
+        userName.style.fontSize = '20px'
+
+        // Append the image and name to the team member div
+        userDiv.appendChild(userImage);
+        userDiv.appendChild(userName);
+
+        // Add event listener to show detailed info when clicked
+        userDiv.addEventListener('click', () => {
+          showUserDetails(user);
+        });
+
+        teamMemberList.appendChild(userDiv);
+      }
+    } else {
+      console.log("No users found.");
+    }
+  }).catch((error) => {
+    console.error("Error fetching users:", error);
+  });
+}
+
+// Function to show user details in a modal
+function showUserDetails(user) {
+  // Set the content in the modal
+  document.getElementById('modal-name').textContent = user.name;
+  document.getElementById('modal-email').textContent = user.email;
+  document.getElementById('modal-admin-status').textContent = user.isAdmin ? "Yes" : "No";
+  document.getElementById('modal-profile-pic').src = user.pfp;
+
+  // Show the modal
+  const modal = document.getElementById('user-detail-modal');
+  modal.style.display = "block";
+}
+
+// Close the modal when the close button is clicked
+document.querySelector('.close').addEventListener('click', function() {
+  document.getElementById('user-detail-modal').style.display = "none";
+});
+
+// Close the modal if clicked outside the modal content
+window.onclick = function(event) {
+  const modal = document.getElementById('user-detail-modal');
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Fetch and display users when the page is loaded
+document.addEventListener('DOMContentLoaded', displayUsers);
+
+  document.addEventListener('DOMContentLoaded', function() {
+      checkUserRole();
+  });
+
+  document.getElementById('add-team-member').addEventListener('click', function() {
+    window.location.href = "account_creation.html";
+  });
+</script>
+
+<script>
+  // Get the checkbox and blur-container elements
+  const menuToggle = document.getElementById('menu-toggle');
+  const blurContainer = document.querySelector('.blur-container');
+
+  // Event listener for the checkbox
+  menuToggle.addEventListener('change', function() {
+    // Toggle the blurred class on the blur-container
+    if (menuToggle.checked) {
+      blurContainer.classList.add('blurred');
+    } else {
+      blurContainer.classList.remove('blurred');
+    }
+  });
+</script>
+</body>
+</html>
