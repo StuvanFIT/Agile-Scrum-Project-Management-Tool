@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunnel Vision</title>
+<link rel = "stylesheet" href="css/currentSprintKanban.css">
+<link rel = "stylesheet" href="css/timelog.css">
+
+<body>
+
+<section class="tunnel-vision-container">
+  <nav class="menu" aria-label="Navigation">
+    <label class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+    </label>
+    <aside id="menuLinks"class="sidebar">
+      <nav>
+        <br>
+        <br>
+        <header class="hamburger-page-button"><a href="home.html" style="text-decoration: underline; font-weight: bold;">Home</a></header><br>
+        <header class="hamburger-page-button"><a href="sprint_page.html">All Sprints</a></header><br>
+        <header class="hamburger-page-button"><a href="product_backlog_page.html">Product Backlog</a></header><br>
+        <header class="hamburger-page-button"><a href="reports_page.html">Reports</a></header><br>
+        <header class="hamburger-page-button"><a href="team_page.html">Team</a></header><br>
+        <header class="hamburger-page-button"><a href="account_creation.html">Create Account</a></header><br>
+        <header class="hamburger-page-button"><a href="index.html">Sign Out</a></header><br>
+      </nav>
+    </aside>
+  </nav>
+
+ 
+
+</div>
+</section>
+
+
+
+<script type="module"> 
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+  import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
+
+  //The firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAg4NXpv6dHmmNqc-wAmJt4utArIpb9TbE",
+    authDomain: "tunnelvision-f07f7.firebaseapp.com",
+    databaseURL: "https://tunnelvision-f07f7-default-rtdb.firebaseio.com",
+    projectId: "tunnelvision-f07f7",
+    storageBucket: "tunnelvision-f07f7.appspot.com",
+    messagingSenderId: "779720304073",
+    appId: "1:779720304073:web:4e1e9e3cf3f1ecd337f418"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const database = getDatabase(app);
+
+  function getLoginDetails() {
+    const userID = sessionStorage.getItem('userID');
+    const userEmail = sessionStorage.getItem('userEmail');
+    return { userID, userEmail };
+  }
+
+  function checkUserRole() {
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
+              const userId = user.uid;
+              const userRef = ref(database, 'user-accounts/' + userId);
+
+              get(userRef).then((snapshot) => {
+                  const data = snapshot.val();
+                  if (data.isAdmin) {
+                      addAdminLink();
+                  }
+              });
+          }
+      })
+  }
+  function addAdminLink() {
+    const menuLinks = document.getElementById('menu-links');
+    const adminLink = document.createElement('header');
+
+
+    adminLink.classList.add('hamburger-page-button');
+    adminLink.innerHTML = '<a href="account_creation.html">Account Creation</a>';
+
+
+    // Get the reference to the "Team" link
+    const teamLink = menuLinks.querySelectorAll('header.hamburger-page-button')[4]; 
+    teamLink.insertAdjacentElement('afterend', adminLink);
+    
+
+  }
+
+
+  
+
+  function userInSprint() {
+      // Get the current user logged in
+      const currentUser = getLoginDetails();
+
+      // Check if the current user is in a sprint:
+      const userRef = ref(database, 'user-accounts/' + currentUser.userID);
+
+      get(userRef).then(snapshot => {
+          if (snapshot.exists()) {
+              const userDetails = snapshot.val();
+
+              // If the current user is in a sprint (inSprint = true)
+              if (userDetails.inSprint) {
+                  inActiveSprint(currentUser);
+              } else {
+                  window.location.href = "product_backlog_page.html";
+              }
+          }
+      });
+  }
+
+  function inActiveSprint(currentUser) {
+      const sprintRef = ref(database, 'sprint-log');
+
+      get(sprintRef).then(snapshot => {
+          if (snapshot.exists()) {
+              const allSprints = snapshot.val();
+              let isInSprint = false; // Flag to avoid multiple redirects
+
+              for (let sprintID in allSprints) {
+                  const sprint = allSprints[sprintID];
+
+                  if (sprint.hasOwnProperty('v7_sprintMembers') && sprint.v6_SprintStatus === "In Progress") {
+                      const sprintTeam = sprint.v7_sprintMembers;
+
+                      sprintTeam.forEach(member => {
+                          if (member.userID === currentUser.userID) {
+                              // Store the sprint details in session storage
+                              sprint.taskId = sprintID
+                              sessionStorage.setItem('selectedSprint', JSON.stringify(sprint));
+                              
+                              isInSprint = true;
+
+                              // Redirect to the current sprint details page
+                              window.location.href = `current_sprint_details_page.html`;
+                          }
+                      });
+                  }
+              }
+
+              // If the person isn't in an active sprint, go to the backlog page
+              if (!isInSprint) {
+                  window.location.href = "product_backlog_page.html";
+              }
+          }
+      });
+  }
+
+  userInSprint();
+
+</script>
+
+
+
+<script>
+  // Get the checkbox and blur-container elements
+  const menuToggle = document.getElementById('menu-toggle');
+  const blurContainer = document.querySelector('.blur-container');
+
+  // Event listener for the checkbox
+  menuToggle.addEventListener('change', function() {
+    // Toggle the blurred class on the blur-container
+    if (menuToggle.checked) {
+      blurContainer.classList.add('blurred');
+    } else {
+      blurContainer.classList.remove('blurred');
+    }
+  });
+</script>
+
+</body>
+</html>
