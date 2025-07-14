@@ -41,7 +41,7 @@ document.getElementById('login-form').addEventListener('submit', (event) => {
         sessionStorage.setItem('userID', user.uid); 
         sessionStorage.setItem('userEmail', user.email); 
 
-        window.location.href = "index.html";
+        window.location.href = "home.html";
     })
     .catch((error) => {
         // Show specific error messages
